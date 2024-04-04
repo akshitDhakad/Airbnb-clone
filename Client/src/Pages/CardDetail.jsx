@@ -7,6 +7,9 @@ import Footer from "./Footer";
 import ImageGrid from "./ImageGrid";
 import Calender from "./Calender";
 
+
+
+
 function CardDetail() {
   const { id } = useParams();
   const [Product, setProduct] = useState([]);

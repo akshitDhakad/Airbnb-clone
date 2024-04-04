@@ -7,7 +7,7 @@ const User = require("./models/Users");
 const SECRET_KEY = "airbnbsecretkey";
 const bcrypt = require("bcrypt");
 const multer = require("multer");
-
+const Place = require("./models/Place");
 // image downloader
 const axios = require("axios");
 const fs = require("fs");
@@ -145,7 +145,6 @@ const storage = multer.diskStorage({
     cb(null, uniqueFilename);
   },
 });
-
 const upload = multer({ storage });
 
 app.post("/upload", upload.single("image"), (req, res) => {
@@ -153,10 +152,42 @@ app.post("/upload", upload.single("image"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "No image file provided" });
   }
-
   const imagePath = path.join(req.file.filename);
   res.json({ imagePath: imagePath });
+
 });
+
+
+
+// add place router 
+
+app.post("/add-place", async (req, res) => {
+  try {
+    const { title, address, description, imgURLs, extras, details } = req.body;
+
+    // Create a new instance of the Place model
+    const newPlace = new Place({
+      title,
+      address,
+      description,
+      imgURLs,
+      extras,
+      details,
+    });
+
+    // Save the new place to the database
+    await newPlace.save();
+
+    res.status(201).json({ message: "Place added successfully" });
+  } catch (error) {
+    console.error("Error adding place:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+
+
 
 
 

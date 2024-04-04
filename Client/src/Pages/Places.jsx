@@ -8,26 +8,98 @@ import axios from "axios";
 
 function Place() {
   const [imageUrl, setImageUrl] = useState("");
-  const [imgURLs, setImgURLs] = useState(new Set());;
+  // const [imgURLs, setImgURLs] = useState(new Set());;
   
-async function ImageURLUpload() {
-  if (imageUrl) {
-    try {
-      const {data} = await axios.post(
-        "http://localhost:3000/image-link-upload",
-        { imageUrl: imageUrl }
-      );
-      setImgURLs((prevURLs) => new Set(prevURLs).add(data.filename));
-      // setImgURLs((prevURLs) => [...prevURLs, data.filename]);
-      setImageUrl("");
-    } catch (error) {
-      console.error("Error uploading image URL:", error);
+//  handle form submit
+
+const [title , setTitle] = useState("");
+const [address , setAddress] = useState("");
+const [description , setDescription] = useState("");
+const [imgURLs, setImgURLs] = useState(new Set());
+const [extras, setExtras] = useState([]);
+
+const [details, setDetails] = useState({
+  type: "",
+  beds: "",
+  bedrooms: "",
+  guests: "",
+  price: "",
+  checkin: "",
+  checkout: "",
+});
+  
+ const handleInputChange = (event) => {
+   const { name, value } = event.target;
+   setDetails({
+     ...details,
+     [name]: value,
+   });
+ };
+  const handleCheckboxChange = (event) => {
+    const checkboxName = event.target.name;
+    if (event.target.checked) {
+      setExtras([...extras, checkboxName]);
+    } else {
+      setExtras(extras.filter((value) => value !== checkboxName));
+    }
+  };
+
+  async function ImageURLUpload() {
+    if (imageUrl) {
+      try {
+        const {data} = await axios.post(
+          "http://localhost:3000/image-link-upload",
+          { imageUrl: imageUrl }
+        );
+        setImgURLs((prevURLs) => new Set(prevURLs).add(data.filename));
+        // setImgURLs((prevURLs) => [...prevURLs, data.filename]);
+        setImageUrl("");
+      } catch (error) {
+        console.error("Error uploading image URL:", error);
+      }
     }
   }
-}
-  function handleSubmit(e) {
+  
+  async function handleSubmit(e) {
     e.preventDefault();
+
+    // Prepare the form data
+    const formData = {
+      title,
+      address,
+      description,
+      imgURLs: Array.from(imgURLs),
+      extras,
+      details,
+    };
+    
+    try {
+      
+      const response = await axios.post(
+        "http://localhost:3000/add-place",
+        formData
+      );
+      setTitle("");
+      setAddress("");
+      setDescription("");
+      setImgURLs(new Set());
+      setExtras([]);
+      setDetails({
+        type: "",
+        beds: "",
+        bedrooms: "",
+        guests: "",
+        price: "",
+        checkin: "",
+        checkout: "",
+      });
+      console.log("Form submitted successfully:", response.data);
+    } catch (error) {
+      alert("Error submitting form:", error);
+    }
   }
+
+  
   
   return (
     <>
@@ -38,7 +110,7 @@ async function ImageURLUpload() {
             {/* Title */}
             <div className="col-span-full">
               <label
-                htmlFor="street-address"
+                htmlFor="title"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Title
@@ -46,9 +118,12 @@ async function ImageURLUpload() {
               <div className="mt-2">
                 <input
                   type="text"
-                  name="street-address"
-                  id="street-address"
-                  autoComplete="street-address"
+                  name="title"
+                  required
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  id="title"
+                  autoComplete="title"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder="Niramay-Wada style Pool villa, forest view &gazebo"
                 />
@@ -57,7 +132,7 @@ async function ImageURLUpload() {
             {/* Full Address */}
             <div className="col-span-full">
               <label
-                htmlFor="street-address"
+                htmlFor="address"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Full Address
@@ -65,8 +140,11 @@ async function ImageURLUpload() {
               <div className="mt-2">
                 <input
                   type="text"
-                  name="street-address"
-                  id="street-address"
+                  required
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  name="address"
+                  id="address"
                   autoComplete="street-address"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder="Velhe, Torna-Rajgad, Maharashtra, India"
@@ -76,15 +154,18 @@ async function ImageURLUpload() {
             {/* Full Description */}
             <div className="col-span-full">
               <label
-                htmlFor="about"
+                htmlFor="description"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Description
               </label>
               <div className="mt-2">
                 <textarea
-                  id="about"
-                  name="about"
+                  id="description"
+                  name="description"
+                  required
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   rows={3}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder="Looking for a romantic and couple-friendly getaway in Panchgani? "
@@ -110,6 +191,7 @@ async function ImageURLUpload() {
                   type="text"
                   name="imageUrl"
                   value={imageUrl}
+                  
                   id="street-address"
                   autoComplete="street-address"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -144,7 +226,7 @@ async function ImageURLUpload() {
                 <PhotoUploader imgURLs={imgURLs} setImgURLs={setImgURLs} />
               </div>
             </div>
-
+            {/* Guests */}
             {/* What this place offers */}
             <div className="border-b border-gray-900/10 pb-12">
               <div className="mt-10 space-y-10">
@@ -157,9 +239,10 @@ async function ImageURLUpload() {
                     <div className="relative flex gap-5">
                       <div className="flex h-6 items-center">
                         <input
-                          id="comments"
-                          name="comments"
+                          id="wifi"
+                          name="wifi"
                           type="checkbox"
+                          onChange={handleCheckboxChange}
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                       </div>
@@ -182,7 +265,7 @@ async function ImageURLUpload() {
                           </svg>
                         </span>
                         <label
-                          htmlFor="comments"
+                          htmlFor="wifi"
                           className="font-medium text-gray-900"
                         >
                           Wifi
@@ -193,9 +276,10 @@ async function ImageURLUpload() {
                     <div className="relative flex gap-5">
                       <div className="flex h-6 items-center">
                         <input
-                          id="comments"
-                          name="comments"
+                          id="radio"
+                          name="radio"
                           type="checkbox"
+                          onChange={handleCheckboxChange}
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                       </div>
@@ -218,7 +302,7 @@ async function ImageURLUpload() {
                           </svg>
                         </span>
                         <label
-                          htmlFor="comments"
+                          htmlFor="radio"
                           className="font-medium text-gray-900"
                         >
                           Radio
@@ -229,8 +313,9 @@ async function ImageURLUpload() {
                     <div className="relative flex gap-5">
                       <div className="flex h-6 items-center">
                         <input
-                          id="comments"
-                          name="comments"
+                          id="tv"
+                          name="tv"
+                          onChange={handleCheckboxChange}
                           type="checkbox"
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
@@ -254,7 +339,7 @@ async function ImageURLUpload() {
                           </svg>
                         </span>
                         <label
-                          htmlFor="comments"
+                          htmlFor="tv"
                           className="font-medium text-gray-900"
                         >
                           Tv
@@ -265,8 +350,9 @@ async function ImageURLUpload() {
                     <div className="relative flex gap-5">
                       <div className="flex h-6 items-center">
                         <input
-                          id="comments"
-                          name="comments"
+                          id="parking"
+                          onChange={handleCheckboxChange}
+                          name="parking"
                           type="checkbox"
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
@@ -290,19 +376,20 @@ async function ImageURLUpload() {
                           </svg>
                         </span>
                         <label
-                          htmlFor="comments"
+                          htmlFor="parking"
                           className="font-medium text-gray-900"
                         >
                           Free Parking
                         </label>
                       </div>
                     </div>
-                    {/* ***** wifi ****** */}
+                    {/****** Security Camers ****** */}
                     <div className="relative flex gap-5">
                       <div className="flex h-6 items-center">
                         <input
-                          id="comments"
-                          name="comments"
+                          id="cameras"
+                          onChange={handleCheckboxChange}
+                          name="cameras"
                           type="checkbox"
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
@@ -326,7 +413,7 @@ async function ImageURLUpload() {
                           </svg>
                         </span>
                         <label
-                          htmlFor="comments"
+                          htmlFor="cameras"
                           className="font-medium text-gray-900"
                         >
                           Security Camers
@@ -337,8 +424,9 @@ async function ImageURLUpload() {
                     <div className="relative flex gap-5">
                       <div className="flex h-6 items-center">
                         <input
-                          id="comments"
-                          name="comments"
+                          id="pets"
+                          onChange={handleCheckboxChange}
+                          name="pets"
                           type="checkbox"
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
@@ -373,8 +461,9 @@ async function ImageURLUpload() {
                     <div className="relative flex gap-5">
                       <div className="flex h-6 items-center">
                         <input
-                          id="comments"
-                          name="comments"
+                          id="assistance"
+                          onChange={handleCheckboxChange}
+                          name="assistance"
                           type="checkbox"
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
@@ -398,19 +487,20 @@ async function ImageURLUpload() {
                           </svg>
                         </span>
                         <label
-                          htmlFor="comments"
+                          htmlFor="assistance"
                           className="font-medium text-gray-900"
                         >
                           Assistance
                         </label>
                       </div>
                     </div>
-                    {/* ***** wifi ****** */}
+                    {/* ***** AC ****** */}
                     <div className="relative flex gap-5">
                       <div className="flex h-6 items-center">
                         <input
-                          id="comments"
-                          name="comments"
+                          id="ac"
+                          onChange={handleCheckboxChange}
+                          name="ac"
                           type="checkbox"
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
@@ -434,7 +524,7 @@ async function ImageURLUpload() {
                           </svg>
                         </span>
                         <label
-                          htmlFor="comments"
+                          htmlFor="ac"
                           className="font-medium text-gray-900"
                         >
                           AC
@@ -448,15 +538,15 @@ async function ImageURLUpload() {
             {/* Extra Info Description */}
             <div className="col-span-full">
               <label
-                htmlFor="about"
+                htmlFor="extrsDescription"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Extra Details
               </label>
               <div className="mt-2">
                 <textarea
-                  id="about"
-                  name="about"
+                  id="extrsDescription"
+                  name="extrsDescription"
                   rows={3}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder="Extra details about place ?"
@@ -465,7 +555,10 @@ async function ImageURLUpload() {
             </div>
             {/* Baisc details */}
             <div className="col-span-full">
-              <Details />
+              <Details
+                details={details}
+                handleInputChange={handleInputChange}
+              />
             </div>
 
             {/* Button */}

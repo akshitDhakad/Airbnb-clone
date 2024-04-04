@@ -1,19 +1,11 @@
-import React, { useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import React, { Component } from "react";
+import SimpleReactCalendar from "simple-react-calendar";
 
 function Calender() {
-  const [date, setDate] = useState(new Date());
-
-  const handleDateChange = (selectedDate) => {
-    setDate(selectedDate);
-  };
-
   return (
     <div>
-      <h1>Calendar Example</h1>
-      <Calendar onChange={handleDateChange} value={date} />
-      <p>Selected date: {date.toDateString()}</p>
+      <h5 className="font-bold text-xl">Calender</h5>
+      
     </div>
   );
 }

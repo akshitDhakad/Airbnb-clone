@@ -5,7 +5,8 @@ const placeSchema = new mongoose.Schema({
   address: { type: String, required: true },
   description: { type: String, required: true },
   imgURLs: [String], // Array of image URLs
-  extras: [String], // Array of extras
+  extras: [String],
+  extraDetails:String, // Array of extras
   details: {
     type: { type: String, required: true },
     beds: { type: String, required: true },
@@ -14,8 +15,8 @@ const placeSchema = new mongoose.Schema({
     price: { type: String, required: true },
     checkin: { type: String, required: true },
     checkout: { type: String, required: true },
-    bed: { type: String, required: true },
-    Number: { type: String, required: true },
+    // bed: { type: String, required: true },
+    // Number: { type: String, required: true },
   },
 });
 

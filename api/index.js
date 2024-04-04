@@ -13,6 +13,9 @@ const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
 
+const stripe = require("stripe")(
+  "sk_test_51NnvnTSHy3suZfykYEiigkkMoRxqWUOCMdzPHWSQYs3Gy4m2zc3NuXH2ObEmvPfF23jtXVPRQJs4nVU9FUGnwybd00YNhrlt6p"
+);
 // apply middlewares
 
 app.use(express.json());
@@ -60,11 +63,16 @@ async function connectToDatabase() {
 connectToDatabase();
 
 // Routers section
-app.get("/", async (req, res) => {
-  res.send({
-    message: "Hello World",
-  });
+app.get("/database", async (req, res) => {
+  try {
+    const data = await Place.find({});
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
+
 // *********** Auth Routes ***********
 app.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
@@ -95,10 +103,11 @@ app.post("/login", async (req, res) => {
         .status(401)
         .json({ success: false, error: "Invalid credentials" });
     }
+    console.log(user._doc);
     // Authentication successful, generate and send token
-
+    const { newPass, ...others } = user._doc;
     const token = jwt.sign({ userId: user._id }, SECRET_KEY);
-    res.json({ success: true, token, name: user.name, email: user.email }); // Include the user's name and success status
+    res.json({ success: true, token, others: others }); // Include the user's name and success status
   } catch (error) {
     console.error("Error logging in:", error.message);
     res.status(500).json({ success: false, error: "An error occurred" });
@@ -146,26 +155,27 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage });
-
 app.post("/upload", upload.single("image"), (req, res) => {
-  
   if (!req.file) {
     return res.status(400).json({ message: "No image file provided" });
   }
   const imagePath = path.join(req.file.filename);
   res.json({ imagePath: imagePath });
-
 });
 
-
-
-// add place router 
-
+// add place router
 app.post("/add-place", async (req, res) => {
   try {
-    const { title, address, description, imgURLs, extras, details } = req.body;
+    const {
+      title,
+      address,
+      description,
+      imgURLs,
+      extras,
+      details,
+      extraDetails,
+    } = req.body;
 
-    // Create a new instance of the Place model
     const newPlace = new Place({
       title,
       address,
@@ -173,6 +183,7 @@ app.post("/add-place", async (req, res) => {
       imgURLs,
       extras,
       details,
+      extraDetails,
     });
 
     // Save the new place to the database
@@ -185,13 +196,61 @@ app.post("/add-place", async (req, res) => {
   }
 });
 
+// send a place data from database to Client side
 
+// Home page router
+app.get("/places", async (req, res) => {
+  const filter = req.query.filter;
+  if (filter) {
+    await Place.find({ "details.type": `${filter}` }).then((data) => {
+      res.send(data);
+    });
+  } else {
+    await Place.find({}).then((data) => {
+      res.send(data);
+    });
+  }
+});
 
+// Card detail page router
+// send a card data  from database to client side
+app.get("/place/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const data = await Place.find({ _id: id });
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Error fetching place:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
+app.post("/create-checkout-session", async (req, res) => {
+  try {
+    // Validate and extract data from req.body
+    const { product, price, daysDiff, airbnbfees, tax } = req.body;
+    // Calculate the total amount in cents (assuming price is in INR)
+    const totalAmountInCents = Math.round(
+      (Number(price) * Number(daysDiff) + Number(airbnbfees) + Number(tax)) *
+        100
+    );
+    // Create a payment intent
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: totalAmountInCents,
+      currency: "inr",
+      // You can add additional configuration options here if needed
+    });
+    // Respond with the client secret
+    res.json({ clientSecret: paymentIntent.client_secret });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while processing the payment." });
+  }
+});
 
-
-
-// server code 
+// server code
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });

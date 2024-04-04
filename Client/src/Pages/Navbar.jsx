@@ -1,17 +1,65 @@
 import React, { useState } from "react";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
-
-function Navbar() {
+function Navbar({ setSearch }) {
   const { user, isAuthenticated } = useAuth();
-  // const [loggedIn ,setLoggedIn] = useState(false)
-  // const [userName,setUser] = useState("")
+  const [searchBtn, setSearchBtn] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  function handleSearch(e) {
+    const inputValue = (e.target.value);
+    setSearchValue(inputValue);
+    const searchValue = [
+      "Villa",
+      "Hotel",
+      "Resort",
+      "Apartment",
+      "House",
+      "Room",
+      "Cottage",
+      "Bungalow",
+      "Cabin",
+      "Chalet",
+      "Mansion",
+      "Motel",
+      "Inn",
+      "Hostel",
+      "Lodge",
+      "Camping",
+      "Guesthouse",
+      "Farmhouse",
+      "Cave",
+      "Treehouse",
+      "Boat",
+      "Yurt",
+      "Plane",
+      "Camper",
+      "Tent",
+      "Igloo",
+      "Hut",
+      "Earth House",
+      "Tipi",
+      "Train",
+      "Tower",
+      "Windmill",
+      "Lighthouse",
+      "Bus",
+      "Casa Particular",
+      "Casa particular",
+      "Casa Particular",
+      "Caves",
+    ];
+    const data = searchValue.find((value) => value.startsWith(inputValue));
+     if (data) {
+    setFilter(data);
+  } else { 
+    setFilter('');
+  }
 
-  // console.log(user,isAuthenticated)
+  }
   return (
-    <div className="flex justify-between p-5 border-b border-gray-200">
-      <Link to={"/"} className="flex gap-3 items-center ">
+    <div className="flex justify-between p-3 border-b border-gray-200">
+      <Link to={"/"} className="flex gap-1 items-center ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -31,12 +79,32 @@ function Navbar() {
 
       {/* search bar  */}
 
-      <div className=" flex items-center gap-4 px-5 py-2 border-black border border-opacity-10 rounded-full shadow-xl sm:hidden lg:flex">
-        <div className="mx-2">Anywhere</div>
-        <div className="mx-2">Any week</div>
-        <div className="mx-2 flex items-center gap-2">
-          <span>Add guest</span>
-          <div className="bg-red-500 rounded-full p-1">
+      <div className="flex items-center gap-2 px-1 py-2 border-black border border-opacity-10 rounded-full shadow-md sm:hidden lg:flex">
+        {searchBtn ? (
+          <div className="mx-2  cursor-pointer">
+            <input
+              onChange={handleSearch}
+              value={searchValue}
+              type="text"
+              className="text-center border-none outline-none focus:ring-0 h-full p-0 m-0"
+              placeholder="Search Any where ..."
+            />
+          </div>
+        ) : (
+          <>
+            <div className="mx-2 cursor-pointer">Anywhere</div>
+            <div className="h-6 bg-blue-gray-600 border"></div>
+            <div className="mx-2 cursor-pointer">Any week</div>
+            <div className="h-6 bg-blue-gray-600 border"></div>
+          </>
+        )}
+
+        <div className="mx-2 flex items-center gap-2 cursor-pointer">
+          <span className={searchBtn ? "hidden" : null}>Add guest</span>
+          <div
+            className="bg-red-500 rounded-full p-1"
+            onClick={() => setSearchBtn(!searchBtn)}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -57,7 +125,7 @@ function Navbar() {
 
       {/* user section  */}
 
-      <Link to={"/addplace"} className="flex items-center gap-5">
+      <Link to={"/addplace"} className="flex items-center gap-2">
         <div className=" flex gap-2">
           <span>Airbnb your home</span>
           <span>
@@ -77,7 +145,7 @@ function Navbar() {
             </svg>
           </span>
         </div>
-        <div className="flex justify-between items-center gap-3 px-3 py-2 border-black border border-opacity-10 rounded-full shadow-xl">
+        <div className="flex justify-between items-center gap-1 px-3 py-2 border-black border border-opacity-10 rounded-full shadow-xl">
           <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +183,6 @@ function Navbar() {
       </Link>
     </div>
   );
-  
 }
 
 export default Navbar;

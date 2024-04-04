@@ -1,8 +1,16 @@
-import React from 'react'
+import React from "react";
 
-function ImageGrid({ showGrid, setshowGrid }) {
+function ImageGrid({ showGrid, setshowGrid, urls }) {
+  console.log(urls);
+
+  // Function to handle image loading errors
+  const handleImageError = (event) => {
+    event.target.src =
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnjIfEB_B6s7r1X-dzBA_qWayfL0kloIDmuA&usqp=CAU";
+  };
+
   return (
-    <div className="w-full h-full bg-white px-20 py-10 flex flex-col ">
+    <div className="w-full h-full bg-white lg:px-20 py-10 flex flex-col">
       <div onClick={() => setshowGrid(!showGrid)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -19,48 +27,31 @@ function ImageGrid({ showGrid, setshowGrid }) {
           />
         </svg>
       </div>
-      <div>
-        <div className="h-80 w-3/4 m-auto my-10">
-          <img
-            className="w-full h-full object-cover"
-            src="https://a0.muscache.com/im/pictures/27013fec-93f9-4250-b9b6-0004a3f6aefb.jpg?im_w=1200"
-            alt="image1"
-          />
-        </div>
-        <div className="h-80 w-3/4 m-auto my-10">
-          <img
-            className="w-full h-full object-cover"
-            src="https://a0.muscache.com/im/pictures/999032d1-87ff-4e46-9a72-e5d06d093830.jpg?im_w=720"
-            alt="image1"
-          />
-        </div>
-        <div className="h-80 w-3/4 m-auto my-10">
-          <img
-            className="w-full h-full object-cover"
-            src="https://a0.muscache.com/im/pictures/miso/Hosting-14584406/original/7913b9c7-a5a1-426b-9586-855fc95eaf62.jpeg?im_w=720"
-            alt="image1"
-          />
-        </div>
-        <div className="h-80 w-3/4 m-auto my-10">
-          <img
-            className="w-full h-full object-cover"
-            src="https://a0.muscache.com/im/pictures/ea2254fb-40fe-40fa-bd27-084841e58aee.jpg?im_w=720"
-            alt="image1"
-          />
-        </div>
-        <div className="h-80 w-3/4 m-auto my-10">
-          <img
-            className="w-full h-full object-cover"
-            src="https://a0.muscache.com/im/pictures/386d9f61-fc5a-4b41-9e34-495c01141422.jpg?im_w=720"
-            alt="image1"
-          />
-        </div>
-       
-
-       
+      <div className="flex flex-col gap-y-5">
+        {urls &&
+          urls.map((links) => (
+            <div key={links} className="h-80 sm:w-11/12 lg:w-3/4 m-auto my-10">
+              <img
+                className="w-full h-full object-cover"
+                src={`http://localhost:3000/uploads/${links}`}
+                alt="image1"
+                onError={handleImageError}
+              />
+            </div>
+          ))}
+        {/* Display a default image when there are no URLs */}
+        {(!urls || urls.length === 0) && (
+          <div className="h-80 sm:w-11/12 lg:w-3/4 m-auto my-10">
+            <img
+              className="w-full h-full object-cover"
+              src="/path-to-your-default-image.jpg"
+              alt="Default Image"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-export default ImageGrid
+export default ImageGrid;

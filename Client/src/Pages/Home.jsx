@@ -1,25 +1,37 @@
-import React from 'react'
-import products from "../data";
-import Card from './Card';
+import Card from "./Card";
+import { useEffect, useState } from "react";
+import Loader from "./Loader";
 
+function Home({ product }) {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-function Home() {
-
+  useEffect(() => {
+    // Simulate an API request (replace with your actual API call)
+    setTimeout(() => {
+      setProducts(product);
+      setLoading(false); // Set loading to false when products are fetched
+    }, 2000); // Simulate a 2-second delay for fetching data (adjust as needed)
+  }, [product]);
 
   return (
-    // <div className="bg-white">
-    <div className="mx-auto max-w-2xl px-4 sm:px-6 sm:py-10 lg:max-w-7xl lg:px-8">
-      <div
-        className="grid sm:justify-center lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2
-          gap-x-3 gap-y-36"
-      >
-        {products.map((product) => (
-          <Card key={product.id} product={product} />
-        ))}
-      </div>
+    <div className="mx-auto sm:px-6 max-w-full my-10">
+      {loading ? (
+        // Display loader while loading is true
+        <div className="text-center py-8">
+          <p className="text-gray-500"><Loader/></p>
+          {/* You can add a loading spinner here */}
+        </div>
+      ) : (
+        // Display product cards when loading is false
+        <div className="grid sm:justify-center lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-3">
+          {products.map((product) => (
+            <Card key={product._id} product={product} />
+          ))}
+        </div>
+      )}
     </div>
-    // </div>
   );
 }
-5
-export default Home
+
+export default Home;

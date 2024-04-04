@@ -1,75 +1,182 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
-import products from "../data";
+// import products from "../data";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
 import ImageGrid from "./ImageGrid";
 import Calender from "./Calender";
-
-
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function CardDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [Product, setProduct] = useState([]);
-  const [showGrid ,setshowGrid] = useState(false)
+  const [showGrid, setshowGrid] = useState(false);
+  const [adultCount, setadultCount] = useState(1);
+  const [childerenCount, setchilderenCount] = useState(0);
+  const [petsCount, setpetsCount] = useState(0);
+  const [price, setPrice] = useState(0);
+
+
+  //************************ date handler section ******************************//
+
+  const [checkIn,setCheckIn] = useState("");
+  const [checkOut,setCheckOut] = useState("");
+
   useEffect(() => {
-    const data = products.find((product) => product.id === 6);
-    setProduct(data);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/place/${id}`);
+        setProduct(response.data[0]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
   }, [id]);
-  
+
+  //************* price section *******************//
+  function calculateTotalPrice() {
+    const basePrice = Product.details.price;
+    let totalPrice = parseFloat(basePrice);
+
+    if (adultCount > 1) {
+      totalPrice += (parseFloat(basePrice) * (adultCount * 3)) / 100;
+    }
+    if (childerenCount > 1) {
+      totalPrice += (parseFloat(basePrice) * (childerenCount * 2)) / 100;
+    }
+    if (petsCount > 1) {
+      totalPrice += (parseFloat(basePrice) * petsCount) / 100;
+    }
+    if (adultCount > 1 || childerenCount > 1 || petsCount > 1) {
+      totalPrice +=
+        (parseFloat(basePrice) * (adultCount * 3)) / 100 +
+        (parseFloat(basePrice) * (childerenCount * 3)) / 100 +
+        (parseFloat(basePrice) * petsCount) / 100;
+    }
+
+    return totalPrice.toFixed(2);
+  }
+
+  useEffect(() => {
+    if (Product.details) {
+      const calculatedPrice = calculateTotalPrice();
+      setPrice(calculatedPrice);
+    }
+  }, [Product.details, adultCount, childerenCount, petsCount]);
+  //******************  form handler ******************//
+
+  function handlePrice(e) {
+    e.preventDefault();
+
+    // Check if any of the fields are empty, null, or undefined
+    if (!checkOut || !checkIn || !Product || !adultCount) {
+      // Show an alert or perform some error handling
+      alert("Please fill in all required fields.");
+    } else {
+      // All required fields are filled
+      const check_Out = new Date(checkOut);
+      const check_In = new Date(checkIn);
+      const timeDiffMilliseconds = check_Out - check_In;
+      const daysDiff = timeDiffMilliseconds / (1000 * 60 * 60 * 24);
+
+      if (daysDiff <= 0) {
+        alert("Check-out date must be after check-in date.");
+      } else {
+        // All checks passed, proceed with navigation
+        const data = {
+          date: [checkOut, checkIn],
+          guests: adultCount + (childerenCount || 0),
+          product: Product,
+          daysDiff: daysDiff,
+          price: price,
+        };
+
+        navigate("/reserve-place", { state: data });
+      }
+    }
+  }
+
+  // function handlePrice(e) {
+  //   e.preventDefault();
+  //   const check_Out = new Date(checkOut);
+  //   const check_In = new Date(checkIn);
+  //   const timeDiffMilliseconds = check_Out - check_In;
+  //   const daysDiff = timeDiffMilliseconds / (1000 * 60 * 60 * 24);
+    
+  //   const data = {
+  //     data:[checkOut,checkIn],
+  //     guests: adultCount + childerenCount,
+  //     product: Product,
+  //     daysDiff: daysDiff,
+  //   };
+  //   navigate("/reserve-place", { state: data });
+  // }
 
   return (
     <>
       <Navbar />
       {showGrid ? (
-        <ImageGrid showGrid={showGrid} setshowGrid={setshowGrid} />
+        <ImageGrid
+          showGrid={showGrid}
+          setshowGrid={setshowGrid}
+          urls={Product.imgURLs}
+        />
       ) : null}
       <div style={showGrid ? { display: "none" } : null} className="bg-white">
-        <div className="px-20 py-5 ">
-          <h2 className="text-2xl font-semibold">
-            LakeView Premium Room in Alleppey
-          </h2>
-          <p className="font-normal underline">
-            Kainakary South, Kerala, India
-          </p>
+        <div className="lg:px-20 sm:px-1 py-5 ">
+          <h2 className="text-2xl font-semibold">{Product.title}</h2>
+          <p className="font-normal underline">{Product.address}</p>
           {/*********** gallery grid**********/}
-          <div className="my-10 grid grid-cols-2 gap-2 rounded-2xl overflow-hidden">
+          <div className="my-10 grid lg:grid-cols-2 gap-2 rounded-2xl overflow-hidden">
             <div className="">
-              <img
-                src="https://a0.muscache.com/im/pictures/27013fec-93f9-4250-b9b6-0004a3f6aefb.jpg?im_w=960"
-                alt="thumbnail-Img"
-              />
+              {Product.imgURLs && (
+                <img
+                  src={`http://localhost:3000/uploads/${Product.imgURLs[0]}`}
+                  alt="thumbnail-Img"
+                  className="h-full w-full object-cover object-center"
+                />
+              )}
             </div>
             <div className="relative grid grid-cols-2 gap-2">
               <div>
-                <img
-                  src="https://a0.muscache.com/im/pictures/999032d1-87ff-4e46-9a72-e5d06d093830.jpg?im_w=720"
-                  alt="Img-1"
-                  className="h-full w-full object-cover object-center"
-                />
+                {Product.imgURLs && (
+                  <img
+                    src={`http://localhost:3000/uploads/${Product.imgURLs[1]}`}
+                    alt="Img-1"
+                    className="h-full w-full object-cover object-center"
+                  />
+                )}
               </div>
               <div>
-                <img
-                  src="https://a0.muscache.com/im/pictures/23e8f804-276c-4b24-90c1-36f6c29f0516.jpg?im_w=720"
-                  alt="Img-2"
-                  className="h-full w-full object-cover object-center"
-                />
+                {Product.imgURLs && (
+                  <img
+                    src={`http://localhost:3000/uploads/${Product.imgURLs[2]}`}
+                    alt="Img-1"
+                    className="h-full w-full object-cover object-center"
+                  />
+                )}
               </div>
               <div>
-                <img
-                  src="https://a0.muscache.com/im/pictures/miso/Hosting-14584406/original/7913b9c7-a5a1-426b-9586-855fc95eaf62.jpeg?im_w=720"
-                  alt="Img-3"
-                  className="h-full w-full object-cover object-center"
-                />
+                {Product.imgURLs && (
+                  <img
+                    src={`http://localhost:3000/uploads/${Product.imgURLs[3]}`}
+                    alt="Img-1"
+                    className="h-full w-full object-cover object-center"
+                  />
+                )}
               </div>
               <div>
-                <img
-                  src="https://a0.muscache.com/im/pictures/ea2254fb-40fe-40fa-bd27-084841e58aee.jpg?im_w=720"
-                  alt="Img-4"
-                  className="h-full w-full object-cover object-center"
-                />
+                {Product.imgURLs && (
+                  <img
+                    src={`http://localhost:3000/uploads/${Product.imgURLs[4]}`}
+                    alt="Img-1"
+                    className="h-full w-full object-cover object-center"
+                  />
+                )}
               </div>
               <div
                 className=" flex absolute border border-black bg-gray-100 rounded-md right-10 bottom-10 px-3 py-1 gap-2 items-center cursor-pointer"
@@ -98,17 +205,21 @@ function CardDetail() {
 
           {/************ descpition section ************/}
           <div className="mt-10 ">
-            <h3 className="font-semibold text-xl">Hotel hosted by Akhil</h3>
-            <p>
-              <span>2 guests</span>&nbsp;
-              <span>1 bedroom</span>&nbsp;
-              <span>2 beds</span>&nbsp;
-              <span>1.5 bathrooms</span>
-            </p>
+            <h3 className="font-semibold text-xl">
+              Hotel hosted by Akshit Dhakad
+            </h3>
+            {Product.details && (
+              <p>
+                <span>{Product.details.guests} guests</span>&nbsp;
+                <span>{Product.details.bedrooms} bedroom</span>&nbsp;
+                <span>{Product.details.beds} beds</span>&nbsp;
+                <span>2 bathrooms</span>
+              </p>
+            )}
           </div>
           {/************ details section ************/}
-          <div className="my-10 grid grid-cols-3 gap-10">
-            <div className="col-span-2">
+          <div className="my-10 grid lg:grid-cols-3 gap-10 p-1">
+            <div className="lg:col-span-2">
               <hr />
               <div className="my-5 flex gap-5">
                 <span>
@@ -128,7 +239,15 @@ function CardDetail() {
                   </svg>
                 </span>
                 <div>
-                  <h5 className="font-semibold">Park for free</h5>
+                  <h5 className="font-semibold">
+                    {Product.extras && Product.extras.includes("parking") ? (
+                      <span>Parking for free</span>
+                    ) : (
+                      <span style={{ textDecoration: "line-through" }}>
+                        Parking at fair price
+                      </span>
+                    )}
+                  </h5>
                   <p className="text-gray-500">
                     This is one of the few places in the area with free parking.
                   </p>
@@ -159,15 +278,7 @@ function CardDetail() {
               </div>
               <hr className="my-5" />
               <div>
-                <p className="text-gray-900">
-                  You could view sunset from the property. Backwater in front of
-                  our property makes you feel great and relaxed stay. Explore
-                  the backwaters and experience tranquility and its scenic
-                  surroundings. Wake up to the greetings of the sun and indulge
-                  in the classic beauty of Kerala in all its glory. My place is
-                  good for couples, solo adventurers, business travelers,
-                  families (with kids), big groups.
-                </p>
+                <p className="text-gray-900">{Product.description}</p>
               </div>
               <hr className="my-5" />
               <div className="my-10">
@@ -211,7 +322,15 @@ function CardDetail() {
                         />
                       </svg>
                     </span>
-                    <span>Wifi</span>
+                    <span>
+                      {Product.extras && Product.extras.includes("wifi") ? (
+                        <span>Wifi</span>
+                      ) : (
+                        <span style={{ textDecoration: "line-through" }}>
+                          Wifi
+                        </span>
+                      )}
+                    </span>
                   </div>
                   <div className="flex gap-2">
                     <span>
@@ -226,11 +345,19 @@ function CardDetail() {
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          d="M7.875 14.25l1.214 1.942a2.25 2.25 0 001.908 1.058h2.006c.776 0 1.497-.4 1.908-1.058l1.214-1.942M2.41 9h4.636a2.25 2.25 0 011.872 1.002l.164.246a2.25 2.25 0 001.872 1.002h2.092a2.25 2.25 0 001.872-1.002l.164-.246A2.25 2.25 0 0116.954 9h4.636M2.41 9a2.25 2.25 0 00-.16.832V12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 12V9.832c0-.287-.055-.57-.16-.832M2.41 9a2.25 2.25 0 01.382-.632l3.285-3.832a2.25 2.25 0 011.708-.786h8.43c.657 0 1.281.287 1.709.786l3.284 3.832c.163.19.291.404.382.632M4.5 20.25h15A2.25 2.25 0 0021.75 18v-2.625c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125V18a2.25 2.25 0 002.25 2.25z"
+                          d="M3.75 7.5l16.5-4.125M12 6.75c-2.708 0-5.363.224-7.948.655C2.999 7.58 2.25 8.507 2.25 9.574v9.176A2.25 2.25 0 004.5 21h15a2.25 2.25 0 002.25-2.25V9.574c0-1.067-.75-1.994-1.802-2.169A48.329 48.329 0 0012 6.75zm-1.683 6.443l-.005.005-.006-.005.006-.005.005.005zm-.005 2.127l-.005-.006.005-.005.005.005-.005.005zm-2.116-.006l-.005.006-.006-.006.005-.005.006.005zm-.005-2.116l-.006-.005.006-.005.005.005-.005.005zM9.255 10.5v.008h-.008V10.5h.008zm3.249 1.88l-.007.004-.003-.007.006-.003.004.006zm-1.38 5.126l-.003-.006.006-.004.004.007-.006.003zm.007-6.501l-.003.006-.007-.003.004-.007.006.004zm1.37 5.129l-.007-.004.004-.006.006.003-.004.007zm.504-1.877h-.008v-.007h.008v.007zM9.255 18v.008h-.008V18h.008zm-3.246-1.87l-.007.004L6 16.127l.006-.003.004.006zm1.366-5.119l-.004-.006.006-.004.004.007-.006.003zM7.38 17.5l-.003.006-.007-.003.004-.007.006.004zm-1.376-5.116L6 12.38l.003-.007.007.004-.004.007zm-.5 1.873h-.008v-.007h.008v.007zM17.25 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zm0 4.5a.75.75 0 110-1.5.75.75 0 010 1.5z"
                         />
                       </svg>
                     </span>
-                    <span>Breakfast</span>
+                    <span>
+                      {Product.extras && Product.extras.includes("radio") ? (
+                        <span>Radio</span>
+                      ) : (
+                        <span style={{ textDecoration: "line-through" }}>
+                          Radio
+                        </span>
+                      )}
+                    </span>
                   </div>
                   <div className="flex gap-2">
                     <span>
@@ -249,7 +376,15 @@ function CardDetail() {
                         />
                       </svg>
                     </span>
-                    <span>TV</span>
+                    <span>
+                      {Product.extras && Product.extras.includes("tv") ? (
+                        <span>Tv</span>
+                      ) : (
+                        <span style={{ textDecoration: "line-through" }}>
+                          Tv
+                        </span>
+                      )}
+                    </span>
                   </div>
                   <div className="flex gap-2">
                     <span>
@@ -268,7 +403,16 @@ function CardDetail() {
                         />
                       </svg>
                     </span>
-                    <span>Free parking on premises</span>
+
+                    <span>
+                      {Product.extras && Product.extras.includes("parking") ? (
+                        <span>Free parking on premises</span>
+                      ) : (
+                        <span style={{ textDecoration: "line-through" }}>
+                          parking
+                        </span>
+                      )}
+                    </span>
                   </div>
                   <div className="flex gap-2">
                     <span>
@@ -287,7 +431,69 @@ function CardDetail() {
                         />
                       </svg>
                     </span>
-                    <span>Air conditioning</span>
+                    <span>
+                      {Product.extras && Product.extras.includes("ac") ? (
+                        <span>Ac</span>
+                      ) : (
+                        <span style={{ textDecoration: "line-through" }}>
+                          Ac
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"
+                        />
+                      </svg>
+                    </span>
+                    <span>
+                      {Product.extras && Product.extras.includes("cameras") ? (
+                        <span>Cameras</span>
+                      ) : (
+                        <span style={{ textDecoration: "line-through" }}>
+                          Cameras
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                        />
+                      </svg>
+                    </span>
+                    <span>
+                      {Product.extras &&
+                      Product.extras.includes("assistance") ? (
+                        <span>Assistance</span>
+                      ) : (
+                        <span style={{ textDecoration: "line-through" }}>
+                          Assistance
+                        </span>
+                      )}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -297,192 +503,254 @@ function CardDetail() {
                 <p className="my-1 text-gray-500">
                   Add your travel dates for exact pricing
                 </p>
-                <div><Calender/></div>
+                <div>
+                  <Calender setCheckIn={setCheckIn} setCheckOut={setCheckOut} />
+                </div>
               </div>
               <hr className="my-5" />
               <div className="my-10">
                 <h5 className="text-xl font-semibold">
-                  Kainakary South, Kerala, India
+                  {Product.address && <span>{Product.address}</span>}
                 </h5>
-                <p className="my-1 text-gray-500">
-                  Our Place named "Kainakary" is a village in Kuttanad Taluk in
-                  Allappuzha District of Kerala state, India
-                </p>
+                <p className="my-1 text-gray-500">{Product.extraDetails}</p>
               </div>
             </div>
             {/* pricing section */}
-            <div className="sticky top-0 right-0">
-              <div className="p-5 rounded-xl shadow-xl border ">
-                <div>
-                  <h4 className="font-bold text-2xl">₹25,500 </h4>
-                  <p className="text-xs text-gray-500">Total before taxes</p>
-                </div>
+            <div className="sticky top-0 right-0 sm:p-20 lg:p-0">
+              <form onSubmit={handlePrice}>
+                <div className="p-5 rounded-xl shadow-xl border ">
+                  <div className="flex justify-center items-end gap-1">
+                    <h4 className="font-bold text-3xl">
+                      {/* {Product.details && (
+                        <span className="text-red-500">
+                          ₹
+                          {(() => {
+                            const basePrice = Product.details.price;
+                            let totalPrice = parseFloat(basePrice); // Convert to number
 
-                <div className="my-10 rounded-xl border grid grid-cols-2">
-                  <div className="p-2">
-                    <h6 className="text-sm text-gray-500">Check-In</h6>
+                            if (adultCount > 1) {
+                              totalPrice +=
+                                (parseFloat(basePrice) * (adultCount * 3)) /
+                                100;
+                            }
+                            if (childerenCount > 1) {
+                              totalPrice +=
+                                (parseFloat(basePrice) * (childerenCount * 2)) /
+                                100;
+                            }
+                            if (petsCount > 1) {
+                              totalPrice +=
+                                (parseFloat(basePrice) * petsCount) / 100;
+                            }
+                            if (
+                              adultCount > 1 ||
+                              childerenCount > 1 ||
+                              petsCount > 1
+                            ) {
+                              totalPrice +=
+                                (parseFloat(basePrice) * (adultCount * 3)) /
+                                  100 +
+                                (parseFloat(basePrice) * (childerenCount * 3)) /
+                                  100 +
+                                (parseFloat(basePrice) * petsCount) / 100;
+                            }
+                            
+                            return totalPrice.toFixed(2); // Convert back to string with 2 decimal places
+                          })()}
+                        </span>
+                      )} */}
+                      {Product.details && (
+                        <span className="text-red-500">₹{price}</span>
+                      )}
+                    </h4>
+                    <p className="text-xs text-gray-500 ">
+                      Total before taxes.
+                    </p>
                   </div>
-                  <div className="p-2">
-                    <h6 className="text-sm text-gray-500">Check-Out</h6>
-                  </div>
+                  <div className="my-10 rounded-xl border grid grid-cols-2">
+                    <div className="p-2 flex flex-col">
+                      <h6 className="text-sm text-gray-500">Check-In</h6>
+                      <span className="mt-1">
+                        {checkIn ? checkIn : "--/--/--"}
+                      </span>
+                    </div>
+                    <div className="p-2 flex flex-col ">
+                      <h6 className="text-sm text-gray-500">Check-Out</h6>
+                      <span className="mt-1">
+                        {checkOut ? checkOut : "--/--/--"}
+                      </span>
+                    </div>
 
-                  <div className="p-2 col-span-2">
-                    <div className="flex justify-between my-5">
-                      <div>
-                        <p>Adults</p>
-                        <p className="text-xs text-gray-400">Age 13+</p>
+                    <div className="p-2 col-span-2">
+                      <div className="flex justify-between my-3">
+                        <div>
+                          <p>Adults</p>
+                          <p className="text-xs text-gray-400">Age 13+</p>
+                        </div>
+                        <div className="flex gap-2 items-center">
+                          {/* http://www.w3.org/2000/svg */}
+                          <svg
+                            viewBox="0 0 256 256"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="25"
+                            height="25"
+                            onClick={(e) => setadultCount(adultCount - 1)}
+                          >
+                            <rect fill="none" height="256" width="256" />
+                            <circle
+                              cx="128"
+                              cy="128"
+                              fill="none"
+                              r="96"
+                              stroke="#000"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="8"
+                            />
+                            <line
+                              fill="none"
+                              stroke="#000"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="8"
+                              x1="88"
+                              x2="168"
+                              y1="128"
+                              y2="128"
+                            />
+                          </svg>
+                          <span>{adultCount >= 1 ? adultCount : 1}</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            x="0px"
+                            y="0px"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 50 50"
+                            onClick={(e) => setadultCount(adultCount + 1)}
+                          >
+                            <path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z"></path>
+                          </svg>
+                        </div>
                       </div>
-                      <div className="flex gap-2 items-center">
-                        {/* http://www.w3.org/2000/svg */}
-                        <svg
-                          viewBox="0 0 256 256"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="25"
-                          height="25"
-                        >
-                          <rect fill="none" height="256" width="256" />
-                          <circle
-                            cx="128"
-                            cy="128"
-                            fill="none"
-                            r="96"
-                            stroke="#000"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="8"
-                          />
-                          <line
-                            fill="none"
-                            stroke="#000"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="8"
-                            x1="88"
-                            x2="168"
-                            y1="128"
-                            y2="128"
-                          />
-                        </svg>
-                        <span>1</span>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          x="0px"
-                          y="0px"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 50 50"
-                        >
-                          <path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z"></path>
-                        </svg>
+                      <div className="flex justify-between my-5">
+                        <div>
+                          <p>Childrens</p>
+                          <p className="text-xs text-gray-400">Ages 2–12</p>
+                        </div>
+                        <div className="flex gap-2 items-center">
+                          {/* http://www.w3.org/2000/svg */}
+                          <svg
+                            viewBox="0 0 256 256"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="25"
+                            height="25"
+                            onClick={(e) =>
+                              setchilderenCount(childerenCount - 1)
+                            }
+                          >
+                            <rect fill="none" height="256" width="256" />
+                            <circle
+                              cx="128"
+                              cy="128"
+                              fill="none"
+                              r="96"
+                              stroke="#000"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="8"
+                            />
+                            <line
+                              fill="none"
+                              stroke="#000"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="8"
+                              x1="88"
+                              x2="168"
+                              y1="128"
+                              y2="128"
+                            />
+                          </svg>
+                          <span>
+                            {childerenCount >= 1 ? childerenCount : 0}
+                          </span>
+                          <svg
+                            onClick={(e) =>
+                              setchilderenCount(childerenCount + 1)
+                            }
+                            xmlns="http://www.w3.org/2000/svg"
+                            x="0px"
+                            y="0px"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 50 50"
+                          >
+                            <path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z"></path>
+                          </svg>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between my-5">
-                      <div>
-                        <p>Childrens</p>
-                        <p className="text-xs text-gray-400">Ages 2–12</p>
-                      </div>
-                      <div className="flex gap-2 items-center">
-                        {/* http://www.w3.org/2000/svg */}
-                        <svg
-                          viewBox="0 0 256 256"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="25"
-                          height="25"
-                        >
-                          <rect fill="none" height="256" width="256" />
-                          <circle
-                            cx="128"
-                            cy="128"
-                            fill="none"
-                            r="96"
-                            stroke="#000"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="8"
-                          />
-                          <line
-                            fill="none"
-                            stroke="#000"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="8"
-                            x1="88"
-                            x2="168"
-                            y1="128"
-                            y2="128"
-                          />
-                        </svg>
-                        <span>1</span>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          x="0px"
-                          y="0px"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 50 50"
-                        >
-                          <path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z"></path>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="flex justify-between my-5">
-                      <div>
-                        <p>Pets</p>
-                      </div>
-                      <div className="flex gap-2 items-center">
-                        {/* http://www.w3.org/2000/svg */}
-                        <svg
-                          viewBox="0 0 256 256"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="25"
-                          height="25"
-                        >
-                          <rect fill="none" height="256" width="256" />
-                          <circle
-                            cx="128"
-                            cy="128"
-                            fill="none"
-                            r="96"
-                            stroke="#000"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="8"
-                          />
-                          <line
-                            fill="none"
-                            stroke="#000"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="8"
-                            x1="88"
-                            x2="168"
-                            y1="128"
-                            y2="128"
-                          />
-                        </svg>
-                        <span>1</span>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          x="0px"
-                          y="0px"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 50 50"
-                        >
-                          <path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z"></path>
-                        </svg>
+                      <div className="flex justify-between my-5">
+                        <div>
+                          <p>Pets</p>
+                        </div>
+                        <div className="flex gap-2 items-center">
+                          {/* http://www.w3.org/2000/svg */}
+                          <svg
+                            viewBox="0 0 256 256"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="25"
+                            height="25"
+                            onClick={(e) => setpetsCount(petsCount - 1)}
+                          >
+                            <rect fill="none" height="256" width="256" />
+                            <circle
+                              cx="128"
+                              cy="128"
+                              fill="none"
+                              r="96"
+                              stroke="#000"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="8"
+                            />
+                            <line
+                              fill="none"
+                              stroke="#000"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="8"
+                              x1="88"
+                              x2="168"
+                              y1="128"
+                              y2="128"
+                            />
+                          </svg>
+                          <span>{petsCount}</span>
+                          <svg
+                            onClick={(e) => setpetsCount(petsCount + 1)}
+                            xmlns="http://www.w3.org/2000/svg"
+                            x="0px"
+                            y="0px"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 50 50"
+                          >
+                            <path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z"></path>
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className=" w-full">
-                  <Link to={"/reserve-place"}>
-                    <div className="w-full text-center font-bold bg-gradient-to-r from-red-600 via-red-400 to-pink-300  rounded-lg px-10 py-2 text-white">
+                  <div className=" w-full">
+                    {/* <button  className="inline"> */}
+                    <button className="w-full text-center font-bold bg-gradient-to-r from-red-600 via-red-400 to-pink-300  rounded-lg px-10 py-2 text-white">
                       Reserve
-                    </div>
-                  </Link>
+                    </button>
+                    {/* </button> */}
+                  </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>

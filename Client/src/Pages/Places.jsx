@@ -1,4 +1,3 @@
-
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import PhotoUploader from "./PhotoUploader";
 import Details from "./Details";
@@ -9,32 +8,34 @@ import axios from "axios";
 function Place() {
   const [imageUrl, setImageUrl] = useState("");
   // const [imgURLs, setImgURLs] = useState(new Set());;
-  
-//  handle form submit
 
-const [title , setTitle] = useState("");
-const [address , setAddress] = useState("");
-const [description , setDescription] = useState("");
-const [imgURLs, setImgURLs] = useState(new Set());
-const [extras, setExtras] = useState([]);
+  //  handle form submit
 
-const [details, setDetails] = useState({
-  type: "",
-  beds: "",
-  bedrooms: "",
-  guests: "",
-  price: "",
-  checkin: "",
-  checkout: "",
-});
-  
- const handleInputChange = (event) => {
-   const { name, value } = event.target;
-   setDetails({
-     ...details,
-     [name]: value,
-   });
- };
+  const [title, setTitle] = useState("");
+  const [address, setAddress] = useState("");
+  const [description, setDescription] = useState("");
+  const [imgURLs, setImgURLs] = useState(new Set());
+  const [extras, setExtras] = useState([]);
+  const [extraDetails, setExtradetails] = useState("");
+  const [details, setDetails] = useState({
+    type: "",
+    beds: "",
+    bedrooms: "",
+    guests: "",
+    price: "",
+    checkin: "",
+    checkout: "",
+  });
+
+  console.log(typeof details.price);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setDetails({
+      ...details,
+      [name]: value,
+    });
+  };
   const handleCheckboxChange = (event) => {
     const checkboxName = event.target.name;
     if (event.target.checked) {
@@ -47,7 +48,7 @@ const [details, setDetails] = useState({
   async function ImageURLUpload() {
     if (imageUrl) {
       try {
-        const {data} = await axios.post(
+        const { data } = await axios.post(
           "http://localhost:3000/image-link-upload",
           { imageUrl: imageUrl }
         );
@@ -59,7 +60,7 @@ const [details, setDetails] = useState({
       }
     }
   }
-  
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -71,10 +72,10 @@ const [details, setDetails] = useState({
       imgURLs: Array.from(imgURLs),
       extras,
       details,
+      extraDetails,
     };
-    
+
     try {
-      
       const response = await axios.post(
         "http://localhost:3000/add-place",
         formData
@@ -84,6 +85,8 @@ const [details, setDetails] = useState({
       setDescription("");
       setImgURLs(new Set());
       setExtras([]);
+      setExtradetails("");
+      setExtras("");
       setDetails({
         type: "",
         beds: "",
@@ -93,18 +96,17 @@ const [details, setDetails] = useState({
         checkin: "",
         checkout: "",
       });
+
       console.log("Form submitted successfully:", response.data);
     } catch (error) {
       alert("Error submitting form:", error);
     }
   }
 
-  
-  
   return (
     <>
       <Navbar />
-      <div className="px-40 py-10">
+      <div className="lg:px-40 sm:px-1 py-10">
         <form onSubmit={handleSubmit}>
           <div className="space-y-12 shadow-2xl p-5">
             {/* Title */}
@@ -191,7 +193,6 @@ const [details, setDetails] = useState({
                   type="text"
                   name="imageUrl"
                   value={imageUrl}
-                  
                   id="street-address"
                   autoComplete="street-address"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -538,18 +539,20 @@ const [details, setDetails] = useState({
             {/* Extra Info Description */}
             <div className="col-span-full">
               <label
-                htmlFor="extrsDescription"
+                htmlFor="extraDetails"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Extra Details
               </label>
               <div className="mt-2">
                 <textarea
-                  id="extrsDescription"
-                  name="extrsDescription"
+                  id="extraDetails"
+                  name="extraDetails"
+                  value={extraDetails}
                   rows={3}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder="Extra details about place ?"
+                  onChange={(e) => setExtradetails(e.target.value)}
                 />
               </div>
             </div>

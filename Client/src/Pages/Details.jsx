@@ -17,6 +17,50 @@ function Details({ details, handleInputChange }) {
             Type of Apartment
           </label>
           <div className="mt-2">
+            <select
+              required
+              name="type"
+              id="type"
+              value={details.type}
+              onChange={handleInputChange}
+              autoComplete="type"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            >
+              <option value="">Select Type</option>
+              <option value="Farm">Farm</option>
+              <option value="Villa">Villa</option>
+              <option value="Beachfront">Beachfront</option>
+              <option value="Countryside">Countryside</option>
+              <option value="Tropical">Tropical</option>
+              <option value="Lakefront">Lakefront</option>
+              <option value="Beach">Beach</option>
+              <option value="Amazing">Amazing</option>
+              <option value="Rooms">Rooms</option>
+              <option value="Tiny-homes">Tiny-homes</option>
+              <option value="Beachfont">Beachfont</option>
+              <option value="Cabin">Cabin</option>
+              <option value="Treehouses">Treehouses</option>
+              <option value="Caves">Caves</option>
+              <option value="Design">Design</option>
+              <option value="Camping">Camping</option>
+              <option value="Boats">Boats</option>
+              <option value="Ryokans">Ryokans</option>
+              <option value="Desert">Desert</option>
+              <option value="Beach">Beach</option>
+              <option value="Lake">Lake</option>
+              {/* Add more options as needed */}
+            </select>
+          </div>
+        </div>
+
+        {/* <div className="sm:col-span-3 sm:col-start-1">
+          <label
+            htmlFor="type"
+            className="block text-sm font-medium leading-6 text-gray-900"
+          >
+            Type of Apartment
+          </label>
+          <div className="mt-2">
             <input
               type="text"
               required
@@ -26,10 +70,10 @@ function Details({ details, handleInputChange }) {
               onChange={handleInputChange}
               autoComplete="type"
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              placeholder="Max- number of Bedrooms ...."
+              placeholder="Type of Apartment"
             />
           </div>
-        </div>
+        </div> */}
         {/* beds */}
         <div className="sm:col-span-3">
           <label

@@ -1,6 +1,6 @@
 import React from "react";
 
-function BookingCard() {
+function BookingCard(zz) {
   return (
     <div className="bg-gray-200 w-4/5 ">
       <div className="grid grid-cols-5 gap-20 p-5 overflow-hidden">

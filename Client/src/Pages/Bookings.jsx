@@ -6,7 +6,6 @@ function Bookings() {
     <div className='flex flex-col items-center gap-5'>
       <BookingCard/>
       <BookingCard/>
-      
     </div>
   );
 }

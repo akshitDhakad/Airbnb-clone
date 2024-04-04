@@ -6,10 +6,10 @@ import Place from "./Places";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Login from "./Login";
-
+import Database from "./Database";
 
 function AddPlace() {
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const [selectedOption, setSelectedOption] = useState(1);
   function handleStyle(optionIndex) {
     let style = "flex items-center gap-3 bg-gray-200 px-10 py-2 rounded-2xl";
@@ -19,8 +19,8 @@ function AddPlace() {
     return style;
   }
 
-    const userIsAuthenticated = isAuthenticated();
-    
+  const userIsAuthenticated = isAuthenticated();
+
   return (
     <div className="flex flex-col">
       <div>
@@ -64,6 +64,7 @@ function AddPlace() {
 
             <span>bookings</span>
           </div>
+
           <div className={handleStyle(3)} onClick={() => setSelectedOption(3)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -84,20 +85,28 @@ function AddPlace() {
         </div>
       </div>
       <div className="flex justify-center">
-        
         {userIsAuthenticated ? (
           selectedOption === 1 ? (
             <Profile />
           ) : selectedOption === 2 ? (
-            <Bookings />
-          ) : (
+            user.name === "admin" ? (
+              <Database />
+            ) : (
+              <Bookings />
+            )
+          ) : selectedOption === 3 && user.isAdmin ? (
             <Link
               to={"/place"}
-              className="flex items-center gap-3 rounded-2xl px-10 py-2 bg-red-500 text-white"
+              className=" flex items-center gap-3 rounded-2xl px-10 py-2 bg-red-500 text-white"
             >
               <span className="text-2xl">+</span>
               <span>Add New Place</span>
             </Link>
+          ) : (
+            <h5 className="bg-blue-700 px-5 py-3 text-white">
+              Only Admin can add new places, please login as admin to add new
+              places
+            </h5>
           )
         ) : (
           <Login />

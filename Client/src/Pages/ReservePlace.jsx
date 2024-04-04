@@ -4,10 +4,34 @@ import Footer from './Footer'
 import Login from './Login';
 import Payment from './Payment';
 import { useAuth } from "../AuthContext";
-
+import { useLocation } from "react-router-dom";
+import {loadStripe} from '@stripe/stripe-js';
+import axios from 'axios';
 
 function ReservePlace() {
   const { user, isAuthenticated } = useAuth();
+  const location = useLocation();
+  const data = location.state;
+  const airbnbfees = 16234.65;
+  const tax = 20699.1;
+  const url = data.product.imgURLs[0];
+
+
+
+
+    const obj = {
+      "product": data.product,
+      "price": data.price,
+      "daysDiff": data.daysDiff,
+      "date": data.date,
+      "guests": data.guests,
+      "user": user,
+      "airbnbfees": airbnbfees,
+      "tax": tax
+    }
+
+
+
   return (
     <div>
       <Navbar />
@@ -18,16 +42,22 @@ function ReservePlace() {
           <div className="mt-5">
             <h2 className="text-xl font-semibold">Your trip</h2>
             <div className="flex justify-between my-3">
-              <span>Dates(1–6 Sep)</span>
-              <span>Edit</span>
+              <div>
+                <p>Dates</p>
+                <span>from : {data.date[1]} &nbsp;</span>
+
+                <span>&nbsp; To : {data.date[0]}</span>
+              </div>
+
+              <button className='px-3  bg-gray-300 rounded'>Edit</button>
             </div>
             <div className="flex justify-between my-3">
-              <span>Guests(1 guest)</span>
-              <span>Edit</span>
+              <span>Guests({data.guests} guest)</span>
+              <button className='px-3 py-1  bg-gray-300 rounded'>Edit</button>
             </div>
           </div>
           <hr className="border-gray-400" />
-          <div>{!isAuthenticated ? <Payment /> : <Login />}</div>
+          <div className='w-full my-10 text-center'>{user ?<Payment obj={obj}/> : <Login />}</div>
         </div>
         {/* Right Section */}
         <dir className="col-span-3 ">
@@ -36,15 +66,17 @@ function ReservePlace() {
             <div className="flex gap-5 my-5">
               <div className="h-28 w-40 rounded-lg overflow-hidden">
                 <img
-                  src="https://a0.muscache.com/im/pictures/4009782c-d801-4ac2-9ad5-bf7c7f94313d.jpg?im_w=720"
+                  src={`http://localhost:3000/uploads/${url}`}
                   alt="thubnail img"
                   className="h-full w-full object-cover"
                 />
               </div>
               <div className="text-xs flex flex-col justify-between">
                 <div>
-                  <p className="text-gray-500">Entire villa</p>
-                  <p>Premium 5BHK villa with PVT pool near tiger Point</p>
+                  <p className="text-gray-500">
+                    Entire {data.product.details.type}
+                  </p>
+                  <p>{data.product.title}</p>
                 </div>
                 <p>★ 5.00 (3 reviews)</p>
               </div>
@@ -55,8 +87,10 @@ function ReservePlace() {
               <h5 className="text-xl">Price details</h5>
               <div className="text-gray-800 flex flex-col gap-1">
                 <div className="flex justify-between">
-                  <span>₹22,999 x 5 nights</span>
-                  <span>₹1,14,995</span>
+                  <span>
+                    ₹{data.price} x {data.daysDiff} nights
+                  </span>
+                  <span>₹{(data.price * data.daysDiff).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="underline text-sm">Airbnb service fee</span>
@@ -74,7 +108,9 @@ function ReservePlace() {
               <span className="font-bold">
                 Total <span className="underline">(INR)</span>
               </span>
-              <span className="font-bold text-red-700">₹1,51,928.75</span>
+              <span className="font-bold text-2xl text-red-700">
+                ₹{(data.price * data.daysDiff + (airbnbfees + tax)).toFixed(2)}
+              </span>
             </div>
           </div>
         </dir>

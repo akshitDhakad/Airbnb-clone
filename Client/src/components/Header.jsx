@@ -124,12 +124,12 @@ const HeaderGrid = () => {
   };
 
   return (
-    <div className="relative border-b shadow-sm ">
+    <div className="relative  ">
       <div className=" grid max-w-6xl m-auto grid-cols-4 md:grid-cols-8 gap-x-4 mt-2 mb-1">
         {items.slice(activeIndex, activeIndex + 8).map((item) => (
           <div
             key={item.id}
-            className="flex flex-col items-center justify-center gap-2 py-2 bg-gray-100 rounded-md shadow-md hover:shadow-md cursor-pointer"
+            className="flex flex-col items-center justify-center gap-2 py-2  rounded-md shadow-md hover:shadow-md cursor-pointer"
           >
             <div className="h-4 md:h-6">
               <img

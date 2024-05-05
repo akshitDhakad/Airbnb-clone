@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "../components/Layout";
 import HeaderGrid from "../components/Header";
 import Card from "../components/Card";
+import Footerbanner from "../components/Footerbanner";
 
 function HomePage() {
   return (
@@ -20,6 +21,9 @@ function HomePage() {
             <Card />
           </div>
         </div>
+      </section>
+      <section>
+        <Footerbanner/>
       </section>
     </Layout>
   );

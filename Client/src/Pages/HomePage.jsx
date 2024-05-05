@@ -23,7 +23,7 @@ function HomePage() {
         </div>
       </section>
       <section>
-        <Footerbanner/>
+        <Footerbanner />
       </section>
     </Layout>
   );

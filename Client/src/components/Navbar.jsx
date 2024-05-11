@@ -12,21 +12,24 @@ function Navbar(...classes) {
       <div className="max-w-7xl m-auto px-4 py-3">
         <div className="flex justify-between">
           {/* brand logo  */}
-          <div className="flex items-center gap-x-2">
-            <div className="h-8">
-              <img
-                loading="lazy"
-                className="h-full w-full object-center object"
-                src="/assets/logo/logo.png"
-                alt="havenhub logo"
-              />
-            </div>
 
-            <div>
-              <h1 className="text-2xl text-theme-red font-semibold">
-                HavenHub
-              </h1>
-            </div>
+          <div className="">
+            <Link to={"/"} className="flex items-center gap-x-2">
+              <div className="h-8">
+                <img
+                  loading="lazy"
+                  className="h-full w-full object-center object"
+                  src="/assets/logo/logo.png"
+                  alt="havenhub logo"
+                />
+              </div>
+
+              <div>
+                <h1 className="text-2xl text-theme-red font-semibold">
+                  HavenHub
+                </h1>
+              </div>
+            </Link>
           </div>
           {/* search button  */}
           <div className="nav-search -mr-52">

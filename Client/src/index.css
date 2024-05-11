@@ -27,3 +27,8 @@ html {
 .border-theme-gray {
   border: 1px solid #b4b3b3;
 }
+
+
+input{
+  background-color: white;
+}

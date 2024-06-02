@@ -1,8 +1,40 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa6";
+import axios from "axios";
+
+// Auth
+import { useMutation } from "react-query";
 
 function Signup() {
+  const signupMutation = useMutation(
+    async (userData) => {
+      const response = await axios.post(
+        "http://localhost:3000/auth/register",
+        userData
+      ); // Adjust the endpoint as needed
+      return response.data;
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Signup successful:", data);
+        // Handle successful signup, e.g., navigate to another page
+      },
+      onError: (error) => {
+        console.error("Signup failed:", error);
+        // Handle signup error, e.g., show error message
+      },
+    }
+  );
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const userData = Object.fromEntries(formData.entries());
+    console.log("User data:", userData)
+    signupMutation.mutate(userData);
+  };
+
   return (
     <section>
       <div
@@ -36,7 +68,10 @@ function Signup() {
               <h1 className="text-3xl font-bold text-center text-theme-red hover:underline">
                 Sign up
               </h1>
-              <form className="mt-5 grid grid-cols-2 gap-x-5 gap-y-4">
+              <form
+                onSubmit={handleSubmit}
+                className="mt-5 grid grid-cols-2 gap-x-5 gap-y-4"
+              >
                 {/* First Name  */}
                 <div>
                   <label
@@ -47,9 +82,11 @@ function Signup() {
                   </label>
                   <input
                     id="first-name"
+                    name="firstName"
                     type="text"
                     className="mt-1 p-2 w-full bg-gray border border-gray-300 rounded-md"
                     placeholder="First Name"
+                    required
                   />
                 </div>
                 {/* Last Name */}
@@ -62,6 +99,7 @@ function Signup() {
                   </label>
                   <input
                     id="last-name"
+                    name="lastName"
                     type="text"
                     className="mt-1 p-2 w-full border border-gray-300 rounded-md"
                     placeholder="Last Name"
@@ -70,17 +108,18 @@ function Signup() {
                 {/* Email */}
                 <div className="col-span-2">
                   <label
-                    htmlFor="email"
+                    htmlFor="email-address"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Email<span className="text-theme-red">*</span>
                   </label>
                   <input
-                    id="email"
-                    required
+                    id="email-address"
+                    name="email"
                     type="email"
                     className="mt-1 p-2 w-full border border-gray-300 rounded-md"
                     placeholder="Email Address"
+                    required
                   />
                 </div>
                 {/* Password */}
@@ -93,10 +132,11 @@ function Signup() {
                   </label>
                   <input
                     id="password"
-                    required
                     type="password"
+                    name="password"
                     className="mt-1 p-2 w-full border border-gray-300 rounded-md"
                     placeholder="Create Password"
+                    required
                   />
                 </div>
                 {/* Button  */}

@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa6";
-import axios from "axios";
-
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 // Auth
+import axios from "axios";
 import { useMutation } from "react-query";
 
 function Signup() {
+  const [passEye, setpassEye] = useState(false);
   const signupMutation = useMutation(
     async (userData) => {
       const response = await axios.post(
@@ -31,7 +32,7 @@ function Signup() {
     event.preventDefault();
     const formData = new FormData(event.target);
     const userData = Object.fromEntries(formData.entries());
-    console.log("User data:", userData)
+    console.log("User data:", userData);
     signupMutation.mutate(userData);
   };
 
@@ -50,6 +51,7 @@ function Signup() {
               <Link to={"/"}>
                 <div className="mx-auto h-36 w-36 p-3 rounded-full bg-white border-3 border-theme-red">
                   <img
+                    loading="lazy"
                     className="h-full w-full object-cover object-center"
                     src="/assets/logo/logo.png"
                     alt="Havenhub"
@@ -84,7 +86,7 @@ function Signup() {
                     id="first-name"
                     name="firstName"
                     type="text"
-                    className="mt-1 p-2 w-full bg-gray border border-gray-300 rounded-md"
+                    className="text-sm mt-1 p-2 w-full bg-white border outline-none focus:ring-2 focus:ring-theme-red  rounded-md"
                     placeholder="First Name"
                     required
                   />
@@ -101,7 +103,7 @@ function Signup() {
                     id="last-name"
                     name="lastName"
                     type="text"
-                    className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                    className="text-sm mt-1 p-2 w-full bg-white border outline-none focus:ring-2 focus:ring-theme-red  rounded-md"
                     placeholder="Last Name"
                   />
                 </div>
@@ -117,7 +119,7 @@ function Signup() {
                     id="email-address"
                     name="email"
                     type="email"
-                    className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                    className="text-sm mt-1 p-2 w-full bg-white border outline-none focus:ring-2 focus:ring-theme-red  rounded-md"
                     placeholder="Email Address"
                     required
                   />
@@ -130,14 +132,22 @@ function Signup() {
                   >
                     Password<span className="text-theme-red">*</span>
                   </label>
-                  <input
-                    id="password"
-                    type="password"
-                    name="password"
-                    className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                    placeholder="Create Password"
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      id="password"
+                      type={passEye ? "text" : "password"}
+                      name="password"
+                      className="text-sm mt-1 p-2 w-full bg-white border outline-none focus:ring-2 focus:ring-theme-red  rounded-md"
+                      placeholder="Create Password"
+                      required
+                    />
+                    <div
+                      onClick={() => setpassEye(!passEye)}
+                      className="hover:cursor-pointer absolute right-5 top-1/3 text-black"
+                    >
+                      {passEye ? <FaRegEye /> : <FaRegEyeSlash />}
+                    </div>
+                  </div>
                 </div>
                 {/* Button  */}
                 <div className="col-span-2">
@@ -162,7 +172,10 @@ function Signup() {
                 </div>
                 <p className="flex items-center gap-x-2 text-sm">
                   Already have an Account ?
-                  <Link to={"/sign-in"} className="text-sm text-light-blue-500">
+                  <Link
+                    to={"/sign-in"}
+                    className="text-sm hover:underline text-blue-900"
+                  >
                     Sign In
                   </Link>
                 </p>

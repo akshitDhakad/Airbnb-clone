@@ -1,9 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa6";
 import { FaUnlockKeyhole } from "react-icons/fa6";
 
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+
+// Auth
+import axios from "axios";
+import { useMutation } from "react-query";
+
 function Signin() {
+  const [passEye, setpassEye] = useState(false);
+  
+  const signupMutation = useMutation(
+    async (userData) => {
+      const response = await axios.post(
+        "http://localhost:3000/auth/login",
+        userData
+      ); // Adjust the endpoint as needed
+      return response.data;
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Signup successful:", data);
+        // Handle successful signup, e.g., navigate to another page
+      },
+      onError: (error) => {
+        console.error("Signup failed:", error);
+        // Handle signup error, e.g., show error message
+      },
+    }
+  );
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const userData = Object.fromEntries(formData.entries());
+    // console.log("User data:", userData);
+    signupMutation.mutate(userData);
+  };
+
+  const { isLoading, isError, error } = signupMutation;
+
   return (
     <section>
       <div
@@ -37,7 +75,10 @@ function Signin() {
               <h1 className="text-3xl font-bold text-center text-theme-red hover:underline flex  items-center justify-center gap-x-5">
                 Sign In <FaUnlockKeyhole />
               </h1>
-              <form className="mt-5 grid grid-cols-2 gap-x-5 gap-y-4">
+              <form
+                onSubmit={handleSubmit}
+                className="mt-5 grid grid-cols-2 gap-x-5 gap-y-4"
+              >
                 {/* Email */}
                 <div className="col-span-2">
                   <label
@@ -48,9 +89,10 @@ function Signin() {
                   </label>
                   <input
                     id="email"
-                    required
                     type="email"
-                    className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                    name="email"
+                    required
+                    className="mt-1 p-2 w-full text-sm bg-white border border-gray-300 outline-none focus:ring-2 focus:ring-theme-red rounded-md"
                     placeholder="Email Address"
                   />
                 </div>
@@ -62,18 +104,27 @@ function Signin() {
                   >
                     Password<span className="text-theme-red">*</span>
                   </label>
-                  <input
-                    id="password"
-                    required
-                    type="password"
-                    className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                    placeholder="Create Password"
-                  />
+                  <div className="relative">
+                    <input
+                      id="password"
+                      type={passEye ? "text" : "password"}
+                      name="password"
+                      className="text-sm mt-1 p-2 w-full bg-white border outline-none focus:ring-2 focus:ring-theme-red  rounded-md"
+                      placeholder="Create Password"
+                      required
+                    />
+                    <div
+                      onClick={() => setpassEye(!passEye)}
+                      className="hover:cursor-pointer absolute right-5 top-1/3 text-black"
+                    >
+                      {passEye ? <FaRegEye /> : <FaRegEyeSlash />}
+                    </div>
+                  </div>
                 </div>
                 {/* Button  */}
                 <div className="col-span-2">
                   <button className="w-full py-2 font-bold bg-theme-red text-white">
-                    Singn In
+                    {isLoading ? "Logging Account..." : "Login Account"}
                   </button>
                 </div>
                 <div className="col-span-2 flex gap-x-5 items-center">
@@ -93,11 +144,19 @@ function Signin() {
                 </div>
                 <p className="flex items-center gap-x-2 text-sm">
                   Already have an Account ?
-                  <Link to={"/sign-up"} className="text-sm text-light-blue-500">
+                  <Link
+                    to={"/sign-up"}
+                    className="text-sm hover:underline text-blue-900"
+                  >
                     Sign Up
                   </Link>
                 </p>
               </form>
+              <div>
+                {isError && (
+                  <div className="text-red-500 text-sm mt-2">{error.message}</div>
+                )}
+              </div>
             </div>
           </div>
         </div>

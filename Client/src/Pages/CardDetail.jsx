@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import { CiHeart } from "react-icons/ci";
@@ -19,18 +19,458 @@ import { AiFillOpenAI } from "react-icons/ai";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { IoIosStarOutline } from "react-icons/io";
-import { FaAngleLeft } from "react-icons/fa6";
+import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import { IoIosArrowDown } from "react-icons/io";
+import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import Model from "../components/Model";
 
 function CardDetail() {
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [showModel, setShowModel] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const [adults, setAdults] = useState(1);
   return (
     <Layout>
-      <main>
+      <>
+        {showModel ? (
+          <Model>
+            <div className="absolute top-0 left-0 w-full min-h-min bg-white max-w-7xl m-auto px-4 py-3 z-50 ">
+              <nav className="fixed top-0 right-0 bg-white w-full m-auto px-4 py-3 ">
+                <div className=" flex items-center justify-between">
+                  <div
+                    className="text-2xl font-semibold hover:cursor-pointer"
+                    onClick={() => setShowModel(!showModel)}
+                  >
+                    <MdOutlineKeyboardArrowLeft />
+                  </div>
+                  <div className="flex items-center gap-x-5">
+                    <div className="flex items-center gap-x-2 hover:cursor-pointer">
+                      <span>
+                        <LuUpload className="text-md" />
+                      </span>
+                      <span className="underline">Share</span>
+                    </div>
+                    <div className="flex items-center gap-x-2 hover:cursor-pointer">
+                      <span>
+                        <CiHeart className="text-xl" />
+                      </span>
+                      <span className="underline">Save</span>
+                    </div>
+                  </div>
+                </div>
+              </nav>
+              <main className="px-10 mt-12">
+                {/* grid  */}
+                <section className="mb-5">
+                  <div>
+                    <div className="py-3">
+                      <h2 className="text-2xl">Photo tour</h2>
+                      <div></div>
+                    </div>
+                    <div className="grid grid-cols-6">
+                      <div className="p-2">
+                        <div className="h-28 w-full">
+                          <img
+                            loading="lazy"
+                            className="h-full w-full object-cover object-center"
+                            src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=320"
+                            alt="havenhub"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-md text-gray-800">Living room</p>
+                        </div>
+                      </div>
+
+                      <div className="p-2">
+                        <div className="h-28 w-full">
+                          <img
+                            loading="lazy"
+                            className="h-full w-full object-cover object-center"
+                            src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=320"
+                            alt="havenhub"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-md text-gray-800">Living room</p>
+                        </div>
+                      </div>
+
+                      <div className="p-2">
+                        <div className="h-28 w-full">
+                          <img
+                            loading="lazy"
+                            className="h-full w-full object-cover object-center"
+                            src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=320"
+                            alt="havenhub"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-md text-gray-800">Living room</p>
+                        </div>
+                      </div>
+
+                      <div className="p-2">
+                        <div className="h-28 w-full">
+                          <img
+                            loading="lazy"
+                            className="h-full w-full object-cover object-center"
+                            src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=320"
+                            alt="havenhub"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-md text-gray-800">Living room</p>
+                        </div>
+                      </div>
+
+                      <div className="p-2">
+                        <div className="h-28 w-full">
+                          <img
+                            loading="lazy"
+                            className="h-full w-full object-cover object-center"
+                            src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=320"
+                            alt="havenhub"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-md text-gray-800">Living room</p>
+                        </div>
+                      </div>
+
+                      <div className="p-2">
+                        <div className="h-28 w-full">
+                          <img
+                            loading="lazy"
+                            className="h-full w-full object-cover object-center"
+                            src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=320"
+                            alt="havenhub"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-md text-gray-800">Living room</p>
+                        </div>
+                      </div>
+
+                      <div className="p-2">
+                        <div className="h-28 w-full">
+                          <img
+                            loading="lazy"
+                            className="h-full w-full object-cover object-center"
+                            src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=320"
+                            alt="havenhub"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-md text-gray-800">Living room</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                {/* Living room */}
+                <section className="mb-5 ">
+                  <div className="grid grid-cols-5">
+                    <div className="col-span-2">
+                      <h2 className="text-2xl">Living room</h2>
+                    </div>
+                    <div className="col-span-3">
+                      <img
+                        loafing="lazy"
+                        className="h-full w-full object-cover object-center"
+                        src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=1200"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                </section>
+                {/* bed room */}
+                <section className="mb-5">
+                  <div className="grid grid-cols-5">
+                    <div className="col-span-2">
+                      <h2 className="text-2xl">Bed Room 1</h2>
+                    </div>
+                    <div className="col-span-3 grid grid-cols-2 gap-2">
+                      <div className="col-span-2">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/d28c1a50-94e4-45ed-bc5d-82cf01bd1657.jpeg?im_w=1200"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=1200"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=1200"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/f81229dc-47ee-4c5d-9ba5-c00877e0361d.jpeg?im_w=1200"
+                          alt="havenhub"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                {/* bed room */}
+                <section className="mb-5">
+                  <div className="grid grid-cols-5">
+                    <div className="col-span-2">
+                      <h2 className="text-2xl">Bed Room 2</h2>
+                    </div>
+                    <div className="col-span-3 grid grid-cols-2 gap-2">
+                      <div className="col-span-2">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/d28c1a50-94e4-45ed-bc5d-82cf01bd1657.jpeg?im_w=1200"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=1200"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=1200"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/f81229dc-47ee-4c5d-9ba5-c00877e0361d.jpeg?im_w=1200"
+                          alt="havenhub"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                {/* Full bathroom*/}
+                <section className="mb-5">
+                  <div className="grid grid-cols-5">
+                    <div className="col-span-2">
+                      <h2 className="text-2xl">Full bathroom</h2>
+                    </div>
+                    <div className="col-span-3 grid grid-cols-2 gap-2">
+                      <div className="col-span-2">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/46e3eb51-e851-4b41-aa5f-d74c1fd2d288.jpeg?im_w=1200"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/21336f33-49bb-404d-a2ad-5740a66c966c.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/217986d6-1170-44fb-95f0-91819560a230.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/dc0d4872-3b60-494c-8ffd-f3929b85f2a0.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/80d3a0de-5f94-4133-a55b-73fd27edc109.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                {/* Workspace */}
+                <section className="mb-5">
+                  <div className="grid grid-cols-5">
+                    <div className="col-span-2">
+                      <h2 className="text-2xl">Workspace</h2>
+                    </div>
+                    <div className="col-span-3">
+                      <img
+                        loading="lazy"
+                        className="h-full w-full object-cover object-center"
+                        src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/543021b4-e959-4300-b1fb-b1b35297294d.jpeg?im_w=1200"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                </section>
+                {/* Exterior*/}
+                <section className="mb-5">
+                  <div className="grid grid-cols-5">
+                    <div className="col-span-2">
+                      <h2 className="text-2xl">Exterior</h2>
+                    </div>
+                    <div className="col-span-3 grid grid-cols-2 gap-2">
+                      <div className="col-span-2">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/541219b6-eff1-490f-9c49-590f1abf605b.jpeg?im_w=1200"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/bf6e8041-6ea9-4899-a945-fa3746aff032.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/270e6f4f-5fea-4117-a552-523370f62a74.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/271ecebe-9211-4f0c-b721-5808b2f9cd2a.jpeg?im_w=1200"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/3adb4a53-e2b9-4294-95f4-aef0b332b1c2.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/9a74b93a-ce66-41ac-97bf-41e2573dfa9d.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                {/*Additional photos*/}
+                <section className="mb-5">
+                  <div className="grid grid-cols-5">
+                    <div className="col-span-2">
+                      <h2 className="text-2xl">Additional photos</h2>
+                    </div>
+                    <div className="col-span-3 grid grid-cols-2 gap-2">
+                      <div className="col-span-2">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/d5479454-a756-4efc-938e-b97f712ab9a7.jpeg?im_w=1200"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/bcfe48b0-c428-4974-ad78-1128b7e8eeaa.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/659640d4-5069-44a7-a6d6-b4edd99e0eed.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/c5292457-8ae4-48fa-bf0b-9e84f717446b.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/46eda94f-6d17-4cb4-9eea-205e28c010d3.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/8eea8934-d899-4130-9a98-3a1a02513e2f.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/be72a751-3449-4c50-8793-4a813ef17f68.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <img
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center"
+                          src="https://a0.muscache.com/im/pictures/miso/Hosting-854065432551935839/original/8eea8934-d899-4130-9a98-3a1a02513e2f.jpeg?im_w=720"
+                          alt="havenhub"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </main>
+            </div>
+          </Model>
+        ) : null}
+      </>
+      <main className={showModel ? "hidden" : "block"}>
         {/* Img Grid  */}
         <section className="bg-white">
           <div className="max-w-7xl px-4 py-10">
@@ -103,7 +543,7 @@ function CardDetail() {
               {/* buttons  */}
               <div className="absolute bottom-10 right-5">
                 <button
-                  onClick={openModal}
+                  onClick={() => setShowModel(!showModel)}
                   className="text-sm flex items-center gap-x-2 bg-gray-200 px-3 py-2 rounded-xl border-theme-black"
                 >
                   <span>
@@ -112,21 +552,6 @@ function CardDetail() {
                   <span>Show all photos</span>
                 </button>
                 {/* Modle  */}
-                {isModalOpen && (
-                  <Model>
-                    <div className="bg-white h-screen w-100vw text-black">
-                      <div className="max-w-7xl px-4 flex flex-col">
-                        <div className="flex py-2 justify-between">
-                          <button onClick={closeModal}>
-                            <FaAngleLeft />
-                          </button>
-                          <div>sasda</div>
-                        </div>
-                        <div className="flex-grow"></div>
-                      </div>
-                    </div>
-                  </Model>
-                )}
               </div>
             </div>
           </div>
@@ -151,6 +576,7 @@ function CardDetail() {
                 <div className="flex gap-x-2 items-end py-3">
                   <div className="h-10 w-10 rounded-full ">
                     <img
+                      loading="lazy"
                       className="h-full w-full object-cover object-center rounded-full"
                       src="https://a0.muscache.com/im/pictures/user/User-531063672/original/669d6c30-a5e9-4ec9-b923-acf8ee81f925.jpeg?im_w=240"
                       alt="Havenhub"
@@ -204,6 +630,7 @@ function CardDetail() {
                     <div>
                       <div className="mb-2 h-52 w-80 border shadow-md rounded-md overflow-hidden">
                         <img
+                          loading="lazy"
                           className="h-full w-full object-cover object-center shadow-xl rounded-md"
                           src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTAzNTE5ODE2NzUxNTY4NDU5Mw%3D%3D/original/14c569fb-ebc3-4035-9192-0c40dafaece3.jpeg?im_w=720"
                           alt="Havenhub"
@@ -344,30 +771,116 @@ function CardDetail() {
                       <p className="uppercase text-xs">check In</p>
                       <p className="text-gray-800 text-sm">Add date</p>
                     </div>
-                    <div className="col-span-2 px-3">
-                      <select
-                        aria-placeholder="guest"
-                        className="bg-white h-12 w-full hover:cursor-pointer border-none outline-none"
-                        name=""
-                        id=""
-                      >
-                        <option className="py-2" value="">
-                          <p>Adult</p>
-                          <p>Age 13+</p>
-                        </option>
-                        <option value="">
-                          <span>Children</span>
-                          <span>Ages 2-12</span>
-                        </option>
-                        <option value="">
-                          <span>Infants</span>
-                          <span>Under 2</span>
-                        </option>
-                        <option value="">
-                          <span>Pets</span>
-                          <span>Bringing a service animal?</span>
-                        </option>
-                      </select>
+                    <div className="col-span-2 px-3 realtive ">
+                      <div className="relative">
+                        <button
+                          onClick={() => setShowMore(!showMore)}
+                          className="py-1 w-full flex items-center justify-between bg-white rounded-md"
+                        >
+                          <div className="flex flex-col">
+                            <span className="text-sm">Guests</span>
+                            <span className="text-sm">1 guest</span>
+                          </div>
+                          <div
+                            className={`${
+                              showMore ? "rotate-180" : ""
+                            } transition-transform duration-200`}
+                          >
+                            <IoIosArrowDown />
+                          </div>
+                        </button>
+                        <div
+                          className={`${
+                            showMore
+                              ? "visible opacity-100"
+                              : "invisible opacity-0"
+                          } absolute top-12 left-[-16px] w-64 bg-white border border-gray-300 rounded-md shadow-md transition-opacity duration-200`}
+                        >
+                          <div className="py-4 px-2 w-full">
+                            {/* Adult  */}
+                            <div className="flex justify-between mb-3">
+                              <div className="flex flex-col text-sm">
+                                <span className="text-md">Adults</span>
+                                <span>Age 13+</span>
+                              </div>
+                              <div className="flex gap-x-2 items-center text-2xl">
+                                <span onClick={() => setAdults(adults - 1)}>
+                                  <CiCircleMinus className="text-2xl text-gray-600 hover:text-gray-900 hover:cursor-pointer" />
+                                </span>
+                                <span>{adults}</span>
+                                <span>
+                                  <CiCirclePlus className="text-2xl text-gray-600 hover:text-gray-900 hover:cursor-pointer" />
+                                </span>
+                              </div>
+                            </div>
+                            {/* Children */}
+                            <div className="flex justify-between mb-3">
+                              <div className="flex flex-col text-sm">
+                                <span className="text-md">Children</span>
+                                <span>Age 2-12</span>
+                              </div>
+                              <div className="flex gap-x-2 items-center text-2xl">
+                                <span>
+                                  <CiCircleMinus className="text-2xl text-gray-600 hover:text-gray-900 hover:cursor-pointer" />
+                                </span>
+                                <span>1</span>
+                                <span>
+                                  <CiCirclePlus className="text-2xl text-gray-600 hover:text-gray-900 hover:cursor-pointer" />
+                                </span>
+                              </div>
+                            </div>
+                            {/* Infants  */}
+                            <div className="flex justify-between mb-3">
+                              <div className="flex flex-col text-sm">
+                                <span className="text-md">Infants</span>
+                                <span>Under 2</span>
+                              </div>
+                              <div className="flex gap-x-2 items-center text-2xl">
+                                <span>
+                                  <CiCircleMinus className="text-2xl text-gray-600 hover:text-gray-900 hover:cursor-pointer" />
+                                </span>
+                                <span>1</span>
+                                <span>
+                                  <CiCirclePlus className="text-2xl text-gray-600 hover:text-gray-900 hover:cursor-pointer" />
+                                </span>
+                              </div>
+                            </div>
+                            {/* Pets  */}
+                            <div className="flex justify-between mb-3">
+                              <div className="flex flex-col text-sm">
+                                <span className="text-md">Pets</span>
+                                <span>Bringing a service animal? ts</span>
+                              </div>
+                              <div className="flex gap-x-2 items-center text-2xl">
+                                <span>
+                                  <CiCircleMinus className="text-2xl text-gray-600 hover:text-gray-900 hover:cursor-pointer" />
+                                </span>
+                                <span>1</span>
+                                <span>
+                                  <CiCirclePlus className="text-2xl text-gray-600 hover:text-gray-900 hover:cursor-pointer" />
+                                </span>
+                              </div>
+                            </div>
+                            {/* This place has a maximum of 6 guests, not including infants. Pets aren't allowed.
+                             */}
+                            <div className="flex justify-between mb-3">
+                              <div className="flex flex-col text-sm">
+                                <span className="text-md">Pets</span>
+                                <span>Bringing a service animal? ts</span>
+                              </div>
+                              <div className="flex gap-x-2 items-center text-2xl">
+                                <span>
+                                  <CiCircleMinus className="text-2xl text-gray-600 hover:text-gray-900 hover:cursor-pointer" />
+                                </span>
+                                <span>1</span>
+                                <span>
+                                  <CiCirclePlus className="text-2xl text-gray-600 hover:text-gray-900 hover:cursor-pointer" />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div>

@@ -15,7 +15,7 @@ function Navbar(...classes) {
 
           <div className="">
             <Link to={"/"} className="flex items-center gap-x-2">
-              <div className="h-8">
+              <div className="h-10">
                 <img
                   loading="lazy"
                   className="h-full w-full object-center object"
@@ -26,13 +26,13 @@ function Navbar(...classes) {
 
               <div>
                 <h1 className="text-2xl text-theme-red font-semibold">
-                  HavenHub
+                  HavenHub Admin
                 </h1>
               </div>
             </Link>
           </div>
           {/* search button  */}
-          <div className="nav-search -mr-52">
+          {/* <div className="nav-search -mr-52">
             <div className="flex gap-x-4 rounded-3xl py-2 px-3 border shadow-sm">
               <div>Anywhere</div>
               <div className="border border-gray-600"></div>
@@ -45,15 +45,15 @@ function Navbar(...classes) {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
           {/* buttons */}
           <div className="login-btn flex items-center gap-x-4">
-            <div>
+            {/* <div>
               <button>Havenhub your home</button>
-            </div>
-            <div>
+            </div> */}
+            {/* <div>
               <AiOutlineGlobal className="text-2xl" />
-            </div>
+            </div> */}
             {/* profile button  */}
             {/* flex gap-x-2 rounded-3xl py-2 px-3 border shadow-sm cursor-pointer */}
             <div className="dropdown dropdown-bottom dropdown-end ">
@@ -74,11 +74,7 @@ function Navbar(...classes) {
                 className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box border border-gray-900 w-52"
               >
                 <li>
-                  <Link to={"sign-up"}>Sign up</Link>
-                </li>
-
-                <li>
-                  <Link to={"sign-up"}>Log in</Link>
+                  <Link to={"sign-up"}>Log out</Link>
                 </li>
                 <hr />
                 <li>

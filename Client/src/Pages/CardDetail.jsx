@@ -1043,7 +1043,7 @@ function CardDetail() {
                     </div>
                     <div className="text-xs">
                       To protect your payment, never transfer money or
-                      communicate outside of the Airbnb website or app.
+                      communicate outside of the Havenhub website or app.
                     </div>
                   </div>
                 </div>
@@ -1115,7 +1115,7 @@ function CardDetail() {
             <div className="text-sm breadcrumbs">
               <ul>
                 <li>
-                  <Link to={"/"}>Airbnb</Link>
+                  <Link to={"/"}>Havenhub</Link>
                 </li>
                 <li>
                   <Link to={"/"}>Maldives</Link>

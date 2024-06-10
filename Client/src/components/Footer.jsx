@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// icons 
+// icons
 import { AiOutlineGlobal } from "react-icons/ai";
 import { FaFacebook } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa6";
@@ -39,7 +39,7 @@ function Footer() {
           <p className="mb-3 text-black font-semibold">Hosting</p>
           <ul className="flex flex-col gap-y-2 text-gray-800 text-sm">
             <li>
-              <Link>Airbnb your home</Link>
+              <Link>Havenhub your home</Link>
             </li>
             <li>
               <Link>AirCover for Hosts</Link>
@@ -58,7 +58,7 @@ function Footer() {
             </li>
           </ul>
         </div>
-        {/* Airbnb */}
+        {/* Havenhub */}
         <div>
           <p className="mb-3 text-black font-semibold">Havenhub</p>
           <ul className="flex flex-col gap-y-2 text-gray-800 text-sm">
@@ -75,14 +75,14 @@ function Footer() {
               <Link>Investors</Link>
             </li>
             <li>
-              <Link>Airbnb.org emergency stays</Link>
+              <Link>Havenhub.org emergency stays</Link>
             </li>
           </ul>
         </div>
         {/* lower footer */}
         <div className="col-span-3 py-3 flex justify-between border-t border-gray-400 ">
           <div className="flex items-center gap-x-2 text-sm">
-            <div>© 2024 Airbnb, Inc.</div>
+            <div>© 2024 Havenhub, Inc.</div>
             <div>.</div>
             <div>Privacy</div>
             <div>.</div>

@@ -9,5 +9,5 @@ module.exports = withMT({
       },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"),"@tailwindcss/forms"],
 });

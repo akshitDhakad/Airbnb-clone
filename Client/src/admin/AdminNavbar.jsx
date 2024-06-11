@@ -26,7 +26,7 @@ function Navbar(...classes) {
 
               <div>
                 <h1 className="text-2xl text-theme-red font-semibold">
-                  HavenHub Admin
+                  HavenHub
                 </h1>
               </div>
             </Link>
@@ -60,11 +60,9 @@ function Navbar(...classes) {
               <div
                 tabIndex={0}
                 role="button"
-                className="flex gap-x-2 rounded-3xl py-2 px-3 border shadow-sm cursor-pointer "
+                className="flex gap-x-2 rounded-full p-2 border shadow-sm cursor-pointer "
               >
-                <div>
-                  <HiMenu className="text-2xl" />
-                </div>
+                
                 <div>
                   <FaUserCircle className="text-2xl" />
                 </div>

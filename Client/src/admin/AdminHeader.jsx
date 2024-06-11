@@ -1,4 +1,7 @@
 import React from "react";
+
+import { Link } from "react-router-dom";
+// icons 
 import { CiFilter } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa6";
 
@@ -21,10 +24,12 @@ function AdminHeader() {
           <CiFilter />
           <span className="font-sm">more Filters</span>
         </button>
-        <button className="bg-black text-xs text-white py-3 px-3 flex items-center gap-x-2">
-          <FaPlus />
-          <span>Add New Products</span>
-        </button>
+        <Link to={"/admin/addProduct"}>
+          <button className="bg-black text-xs text-white py-3 px-3 flex items-center gap-x-2">
+            <FaPlus />
+            <span>Add New Products</span>
+          </button>
+        </Link>
       </div>
     </div>
   );

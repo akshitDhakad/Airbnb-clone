@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function AdminiSidebar() {
   return (
@@ -53,7 +54,7 @@ function AdminiSidebar() {
           <div class="overflow-hidden">
             <div class="block w-full py-1 font-sans text-sm antialiased font-light leading-normal text-gray-700">
               <nav class="flex min-w-[240px] flex-col gap-1 p-0 font-sans text-base font-normal text-blue-gray-700">
-                <div
+                <Link to={"/admin/home"}
                   role="button"
                   class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
                 >
@@ -75,7 +76,7 @@ function AdminiSidebar() {
                     </svg>
                   </div>
                   Products
-                </div>
+                </Link>
                 <div
                   role="button"
                   class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"

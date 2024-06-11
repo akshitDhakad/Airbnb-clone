@@ -32,8 +32,8 @@ function Card() {
         </div>
         <Link to={"/havenhub/car-detail"}>
           <img
-            className="h-full w-full object-cover"
             loading="lazy"
+            className="h-full w-full object-cover"
             src="https://images.unsplash.com/photo-1601918774946-25832a4be0d6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWlyYm5ifGVufDB8fDB8fHww"
             alt="HavenHub"
           />

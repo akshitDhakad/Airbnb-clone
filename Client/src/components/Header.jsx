@@ -147,15 +147,15 @@ const HeaderGrid = () => {
       </div>
       <button
         onClick={handlePrev}
-        className="absolute left-5 top-1/3 text-gray-800 font-bold rounded-full"
+        className="absolute left-5 top-1/3 bg-gray-500 font-bold rounded-full"
       >
-        <IoIosArrowDropleftCircle className="text-3xl " />
+        <IoIosArrowDropleftCircle className="text-3xl text-white border shadow  rounded-full" />
       </button>
       <button
         onClick={handleNext}
-        className="absolute right-5 top-1/3 text-gray-800 font-bold rounded-full"
+        className="absolute right-5 top-1/3 bg-gray-500  font-bold rounded-full"
       >
-        <FaCircleChevronRight className="text-3xl" />
+        <FaCircleChevronRight className="text-3xl text-white border-2 shadow-lg  rounded-full" />
       </button>
     </div>
   );

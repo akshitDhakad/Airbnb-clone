@@ -8,6 +8,8 @@ import Signin from "./Pages/Signin";
 
 // Admin Routes 
 import  Home from "./admin/AdminHome";
+import AdminAddProduct from "./admin/AdminAddProduct";
+import AdminEditProduct from "./admin/AdminEditProduct";
 
 function App() {
   return (
@@ -17,7 +19,9 @@ function App() {
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/havenhub/car-detail" element={<CardDetail />} />
-        <Route path="/admin" element={<Home />} />
+        <Route path="/admin/home" element={<Home />} />
+        <Route path="/admin/addProduct" element={<AdminAddProduct />} />
+        <Route path="/admin/editProduct" element={<AdminEditProduct />} />
       </Routes>
     </div>
   );

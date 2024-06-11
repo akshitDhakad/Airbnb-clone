@@ -14,7 +14,7 @@ function HomePage() {
       {/* card  */}
       <section>
         <div className="bg-white max-w-7xl m-auto px-4 py-10">
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-2">
             <Card />
             <Card />
             <Card />

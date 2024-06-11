@@ -32,7 +32,7 @@ function Navbar(...classes) {
             </Link>
           </div>
           {/* search button  */}
-          <div className="nav-search -mr-52">
+          <div className="hidden md:block nav-search -mr-52">
             <div className="flex gap-x-4 rounded-3xl py-2 px-3 border shadow-sm">
               <div>Anywhere</div>
               <div className="border border-gray-600"></div>
@@ -47,7 +47,7 @@ function Navbar(...classes) {
             </div>
           </div>
           {/* buttons */}
-          <div className="login-btn flex items-center gap-x-4">
+          <div className="hidden  login-btn md:flex items-center gap-x-4">
             <div>
               <button>Havenhub your home</button>
             </div>
@@ -83,6 +83,49 @@ function Navbar(...classes) {
                 <hr />
                 <li>
                   <Link to={"sign-up"}>Havenhub your home</Link>
+                </li>
+
+                <li>
+                  <Link to={"sign-up"}>Help Center</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+          {/*Mobile Navbar buttons */}
+          <div className="login-btn md:hidden  flex items-center gap-x-4">
+            {/* profile button  */}
+            {/* flex gap-x-2 rounded-3xl py-2 px-3 border shadow-sm cursor-pointer */}
+            <div className="dropdown  dropdown-bottom dropdown-end ">
+              <div
+                tabIndex={0}
+                role="button"
+                className="flex gap-x-2 rounded-3xl py-2 px-3 border shadow-sm cursor-pointer "
+              >
+                <div>
+                  <HiMenu className="text-2xl" />
+                </div>
+                <div>
+                  <FaUserCircle className="text-2xl" />
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box border border-gray-900 w-52"
+              >
+                <li>
+                  <Link to={"sign-up"}>Sign up</Link>
+                </li>
+
+                <li>
+                  <Link to={"sign-up"}>Log in</Link>
+                </li>
+                <hr />
+                <li>
+                  <Link to={"sign-up"}>
+                    {" "}
+                 
+                    Havenhub your home
+                  </Link>
                 </li>
 
                 <li>

@@ -13,7 +13,7 @@ function Footer() {
         {/* uppper footer  */}
         <div>
           <p className="mb-3 text-black font-semibold">Support</p>
-          <ul className="flex flex-col gap-y-2 text-gray-800 text-sm">
+          <ul className="flex flex-col gap-y-2 text-gray-800 text-sm ">
             <li>
               <Link>Help Center</Link>
             </li>

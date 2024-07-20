@@ -1,12 +1,39 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Layout from "../components/Layout";
 import HeaderGrid from "../components/Header";
 import Card from "../components/Card";
 import Footerbanner from "../components/Footerbanner";
 
+// data feaching
+import { StateContext } from "../store/context";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { actionTypes } from "../store/reducer";
+
+const fetchProducts = async () => {
+  const { data } = await axios.get("https://dummyjson.com/productns");
+  return data;
+};
 function HomePage() {
+  const { state, dispatch } = useContext(StateContext);
+  // Update to use the new query format
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["products"], // unique key for the query
+    queryFn: fetchProducts, // function to fetch data
+    onSuccess: (data) => {
+      dispatch({ type: actionTypes.SET_PRODUCTS, payload: data });
+    },
+    onError: (error) => {
+      dispatch({ type: actionTypes.SET_ERROR, payload: error.message });
+    },
+  });
+
+  console.log(data);
+
   return (
     <Layout>
+      {isLoading && <p>Loading...</p>}
+      {error && <p>Error: {error.message}</p>}
       {/* header  */}
       <section className="">
         <HeaderGrid />

@@ -5,9 +5,14 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 // Auth
 import axios from "axios";
 import { useMutation } from "react-query";
+// Google Authentication
+
+import { auth, provider } from "../firebaseConfig";
+import { signInWithPopup } from "firebase/auth";
 
 function Signup() {
   const [passEye, setpassEye] = useState(false);
+
   const signupMutation = useMutation(
     async (userData) => {
       const response = await axios.post(
@@ -36,13 +41,26 @@ function Signup() {
     signupMutation.mutate(userData);
   };
 
+  // Google Authentication
+  const signUpWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(result.user);
+        // Handle successful login here
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle errors here
+      });
+  };
+
   return (
     <section>
       <div
         className="h-screen px-4 bg-cover bg-center flex items-center"
         style={{
           backgroundImage:
-            "url('https://source.unsplash.com/2400x1600/?house,rooms,forest,farm')",
+            "url('https://images.pexels.com/photos/807598/pexels-photo-807598.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')",
         }}
       >
         <div className="max-w-6xl w-full h-[95vh] px-10 m-auto">
@@ -78,7 +96,7 @@ function Signup() {
                 <div>
                   <label
                     htmlFor="first-name"
-                    className="block text-sm font-medium text-gray-700"
+                    className="mb-2 block text-sm font-medium text-gray-700"
                   >
                     First Name <span className="text-theme-red">*</span>
                   </label>
@@ -95,7 +113,7 @@ function Signup() {
                 <div>
                   <label
                     htmlFor="last-name"
-                    className="block text-sm font-medium text-gray-700"
+                    className="mb-2  block text-sm font-medium text-gray-700"
                   >
                     Last Name<span className="text-theme-red">*</span>
                   </label>
@@ -161,14 +179,14 @@ function Signup() {
                   <div className="w-full border border-gray-300"></div>
                 </div>
                 <div className="col-span-2">
-                  <button className="w-full py-2 bg-blue-600 text-white">
-                    <Link
-                      to="/sign-up"
-                      className="flex items-center gap-2 justify-center"
-                    >
+                  <div
+                    onClick={signUpWithGoogle}
+                    className="w-full py-2 bg-blue-600 text-white"
+                  >
+                    <Link className="flex items-center gap-2 justify-center">
                       Sign Up with Google <FaGoogle />
                     </Link>
-                  </button>
+                  </div>
                 </div>
                 <p className="flex items-center gap-x-2 text-sm">
                   Already have an Account ?

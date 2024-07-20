@@ -5,13 +5,18 @@ import { FaUnlockKeyhole } from "react-icons/fa6";
 
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
+// Google Authentication
+
+import { auth, provider } from "../firebaseConfig";
+import { signInWithPopup } from "firebase/auth";
+
 // Auth
 import axios from "axios";
 import { useMutation } from "react-query";
 
 function Signin() {
   const [passEye, setpassEye] = useState(false);
-  
+
   const signupMutation = useMutation(
     async (userData) => {
       const response = await axios.post(
@@ -23,11 +28,11 @@ function Signin() {
     {
       onSuccess: (data) => {
         console.log("Signup successful:", data);
-        // Handle successful signup, e.g., navigate to another page
+        // Handle successful signup
       },
       onError: (error) => {
         console.error("Signup failed:", error);
-        // Handle signup error, e.g., show error message
+        // Handle signup error, e.g.
       },
     }
   );
@@ -36,11 +41,23 @@ function Signin() {
     event.preventDefault();
     const formData = new FormData(event.target);
     const userData = Object.fromEntries(formData.entries());
-    // console.log("User data:", userData);
     signupMutation.mutate(userData);
   };
 
   const { isLoading, isError, error } = signupMutation;
+
+  // Google Authentication
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(result.user);
+        // Handle successful login here
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle errors here
+      });
+  };
 
   return (
     <section>
@@ -48,7 +65,7 @@ function Signin() {
         className="h-screen px-4 bg-cover bg-center flex items-center"
         style={{
           backgroundImage:
-            "url('https://source.unsplash.com/2400x1600/?house,rooms,forest,farm')",
+            "url('https://images.pexels.com/photos/807598/pexels-photo-807598.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')",
         }}
       >
         <div className="max-w-6xl w-full h-[95vh] px-10 m-auto">
@@ -77,7 +94,7 @@ function Signin() {
               </h1>
               <form
                 onSubmit={handleSubmit}
-                className="mt-5 grid grid-cols-2 gap-x-5 gap-y-4"
+                className="mt-5 grid grid-cols-2 gap-x-5 gap-y-8"
               >
                 {/* Email */}
                 <div className="col-span-2">
@@ -132,8 +149,12 @@ function Signin() {
                   <div>OR</div>
                   <div className="w-full border border-gray-300"></div>
                 </div>
+                {/* Goolg Authentication */}
                 <div className="col-span-2">
-                  <button className="w-full py-2 bg-blue-600 text-white">
+                  <button
+                    onClick={signInWithGoogle}
+                    className="w-full py-2 bg-blue-600 text-white"
+                  >
                     <Link
                       to="/sign-up"
                       className="flex items-center gap-2 justify-center"
@@ -154,7 +175,9 @@ function Signin() {
               </form>
               <div>
                 {isError && (
-                  <div className="text-red-500 text-sm mt-2">{error.message}</div>
+                  <div className="text-red-500 text-sm mt-2">
+                    {error.message}
+                  </div>
                 )}
               </div>
             </div>

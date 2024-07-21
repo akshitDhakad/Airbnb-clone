@@ -9,17 +9,17 @@ import { StateContext } from "../store/context";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { actionTypes } from "../store/reducer";
-
+import { AlertComp } from "../utils/Alert";
 const fetchProducts = async () => {
-  const { data } = await axios.get("https://dummyjson.com/productns");
+  const { data } = await axios.get("https://dummyjson.com/productms");
   return data;
 };
 function HomePage() {
   const { state, dispatch } = useContext(StateContext);
   // Update to use the new query format
   const { data, error, isLoading } = useQuery({
-    queryKey: ["products"], // unique key for the query
-    queryFn: fetchProducts, // function to fetch data
+    queryKey: ["products"],
+    queryFn: fetchProducts, 
     onSuccess: (data) => {
       dispatch({ type: actionTypes.SET_PRODUCTS, payload: data });
     },
@@ -33,7 +33,7 @@ function HomePage() {
   return (
     <Layout>
       {isLoading && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
+      {error && <AlertComp message={error.message} />}
       {/* header  */}
       <section className="">
         <HeaderGrid />

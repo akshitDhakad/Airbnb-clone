@@ -83,6 +83,7 @@ const Tab1 = () => {
     </>
   );
 };
+
 const Tab2 = () => {
   return (
     <>
@@ -170,16 +171,19 @@ const Tab2 = () => {
 };
 
 function Footerbanner() {
+
   const [tab, setTab] = useState(0);
+
+  
   return (
     <div className="max-w-7xl flex flex-col gap-y-5 bg-white px-4 py-10">
       <h2 className="text-2xl ">Inspiration for future getaways</h2>
 
-      <div className="grid grid-cols-4 md:grid-cols-6 text-sm gap-x-5 gap-y-10 border-b border-gray-500 ">
+      <div className="grid grid-cols-4 md:grid-cols-6 text-sm gap-x-5 gap-y-5 mb-10">
         <div
           onClick={() => setTab(0)}
           className={`cursor-pointer ${
-            tab === 0 ? "border-b-2 border-gray-600" : null
+            tab === 0 ? "border-b border-gray-600" : null
           }`}
         >
           Popular
@@ -187,7 +191,7 @@ function Footerbanner() {
         <div
           onClick={() => setTab(1)}
           className={`cursor-pointer ${
-            tab === 1 ? "border-b-2 border-gray-600" : null
+            tab === 1 ? "border-b border-gray-600" : null
           }`}
         >
           Art & culture
@@ -195,7 +199,7 @@ function Footerbanner() {
         <div
           onClick={() => setTab(2)}
           className={`cursor-pointer ${
-            tab === 2 ? "border-b-2 border-gray-600" : null
+            tab === 2 ? "border-b border-gray-600" : null
           }`}
         >
           Outdoors
@@ -203,7 +207,7 @@ function Footerbanner() {
         <div
           onClick={() => setTab(3)}
           className={`cursor-pointer ${
-            tab === 3 ? "border-b-2 border-gray-600" : null
+            tab === 3 ? "border-b border-gray-600" : null
           }`}
         >
           Moutains
@@ -211,7 +215,7 @@ function Footerbanner() {
         <div
           onClick={() => setTab(4)}
           className={`cursor-pointer ${
-            tab === 4 ? "border-b-2 border-gray-600" : null
+            tab === 4 ? "border-b border-gray-600" : null
           }`}
         >
           Beach
@@ -219,7 +223,7 @@ function Footerbanner() {
         <div
           onClick={() => setTab(5)}
           className={`cursor-pointer ${
-            tab === 5 ? "border-b-2 border-gray-600" : null
+            tab === 5 ? "border-b border-gray-600" : null
           }`}
         >
           Unique stays
@@ -227,7 +231,7 @@ function Footerbanner() {
         <div
           onClick={() => setTab(6)}
           className={`cursor-pointer ${
-            tab === 6 ? "border-b-2 border-gray-600" : null
+            tab === 6 ? "border-b border-gray-600" : null
           }`}
         >
           Categories
@@ -235,7 +239,7 @@ function Footerbanner() {
         <div
           onClick={() => setTab(7)}
           className={`cursor-pointer ${
-            tab === 7 ? "border-b-2 border-gray-600" : null
+            tab === 7 ? "border-b border-gray-600" : null
           }`}
         >
           Things to do

@@ -4,11 +4,11 @@ function Footer() {
   return (
     <footer className="bg-theme-red text-white">
       <div className="max-w-7xl m-auto px-4 py-2">
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between">
           <div>
             <h1 className="text-lg font-semibold">HavenHub Admin</h1>
           </div>
-          <div>
+          <div className=''>
             <p className="text-sm">© 2021 HavenHub, Inc. All rights reserved</p>
           </div>
         </div>

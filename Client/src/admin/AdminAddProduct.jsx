@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from "react";
 import AdminLayout from "./AdminLayout";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
@@ -7,6 +7,10 @@ import { Link } from "react-router-dom";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
 function AdminAddProduct() {
+
+  const [isEditing, setIsEditing] = useState(false);
+
+
   return (
     <AdminLayout>
       <section className="h-full">
@@ -43,7 +47,7 @@ function AdminAddProduct() {
                         <div className="mt-2">
                           <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                             <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">
-                              workcation.com/
+                              havenhub.com/
                             </span>
                             <input
                               type="text"
@@ -68,9 +72,10 @@ function AdminAddProduct() {
                           <textarea
                             id="about"
                             name="about"
+                            placeholder="Write here..."
                             rows={3}
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            defaultValue={""}
+                            className="bg-white border block w-full rounded-md  py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-600 placeholder:textarea-sm  focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            // defaultValue={"Write Something about Host"}
                           />
                         </div>
                         <p className="mt-3 text-sm leading-6 text-gray-600">
@@ -86,16 +91,35 @@ function AdminAddProduct() {
                           Photo
                         </label>
                         <div className="mt-2 flex items-center gap-x-3">
-                          <UserCircleIcon
-                            className="h-12 w-12 text-gray-300"
-                            aria-hidden="true"
-                          />
-                          <button
-                            type="button"
-                            className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                          >
-                            Change
-                          </button>
+                          <div className="h-20 w-20 rounded-full overflow-hidden border ring-1 ring-gray-400">
+                            <img
+                              className="h-full w-full object-cover object-center"
+                              src=""
+                              alt="Photo"
+                            />
+                          </div>
+
+                          {isEditing ? (
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300"
+                              onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  console.log("File selected:", file);
+                                }
+                              }}
+                            />
+                          ) : (
+                            <button
+                              type="button"
+                              className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                              onClick={() => setIsEditing(true)}
+                            >
+                              Change
+                            </button>
+                          )}
                         </div>
                       </div>
 
@@ -128,7 +152,7 @@ function AdminAddProduct() {
                               <p className="pl-1">or drag and drop</p>
                             </div>
                             <p className="text-xs leading-5 text-gray-600">
-                              PNG, JPG, GIF up to 10MB
+                              PNG, JPG, GIF up to 5MB
                             </p>
                           </div>
                         </div>
@@ -157,8 +181,10 @@ function AdminAddProduct() {
                             type="text"
                             name="first-name"
                             id="first-name"
+                            required
+                            placeholder="Enter First Name"
                             autoComplete="given-name"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 p-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:text-sm focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           />
                         </div>
                       </div>
@@ -175,8 +201,9 @@ function AdminAddProduct() {
                             type="text"
                             name="last-name"
                             id="last-name"
+                            placeholder="Enter Last Name"
                             autoComplete="family-name"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 p-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           />
                         </div>
                       </div>
@@ -193,8 +220,10 @@ function AdminAddProduct() {
                             id="email"
                             name="email"
                             type="email"
+                            required
+                            placeholder="example@gmail.com"
                             autoComplete="email"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            className="px-1 bg-white block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           />
                         </div>
                       </div>
@@ -211,11 +240,14 @@ function AdminAddProduct() {
                             id="country"
                             name="country"
                             autoComplete="country-name"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                            className="bg-white block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                            defaultValue={"India"}
                           >
-                            <option>United States</option>
-                            <option>Canada</option>
-                            <option>Mexico</option>
+                            <option value={"india"}>India</option>
+                            <option value={"nepal"}>Nepal</option>
+                            <option value={"usa"}>United States</option>
+                            <option value={"canada"}>Canada</option>
+                            <option value={"mexico"}>Mexico</option>
                           </select>
                         </div>
                       </div>
@@ -232,8 +264,10 @@ function AdminAddProduct() {
                             type="text"
                             name="street-address"
                             id="street-address"
+                            required
+                            placeholder="local Street Address ..."
                             autoComplete="street-address"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           />
                         </div>
                       </div>
@@ -251,7 +285,9 @@ function AdminAddProduct() {
                             name="city"
                             id="city"
                             autoComplete="address-level2"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            placeholder="Enter City"
+                            required
+                            className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           />
                         </div>
                       </div>
@@ -268,8 +304,10 @@ function AdminAddProduct() {
                             type="text"
                             name="region"
                             id="region"
+                            required
+                            placeholder="Enter State / Province"
                             autoComplete="address-level1"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           />
                         </div>
                       </div>
@@ -286,8 +324,10 @@ function AdminAddProduct() {
                             type="text"
                             name="postal-code"
                             id="postal-code"
+                            required
+                            placeholder="Enter ZIP / Postal code"
                             autoComplete="postal-code"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           />
                         </div>
                       </div>
@@ -455,4 +495,4 @@ function AdminAddProduct() {
   );
 }
 
-export default AdminAddProduct
+export default AdminAddProduct;

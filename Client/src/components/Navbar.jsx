@@ -33,11 +33,11 @@ function Navbar(...classes) {
           </div>
           {/* search button  */}
           <div className="hidden md:block nav-search -mr-52">
-            <div className="flex gap-x-4 rounded-3xl py-2 px-3 border shadow-sm">
+            <div className="flex items-center gap-x-4 rounded-3xl py-2 px-3 border shadow-sm">
               <div>Anywhere</div>
-              <div className="border border-gray-600"></div>
+              <div className="h-6 border border-gray-600"></div>
               <div>Any week</div>
-              <div className="border border-gray-600"></div>
+              <div className="h-6 border border-gray-600"></div>
               <div>Add guests</div>
               <div>
                 <button className="bg-theme-red p-2 rounded-full text-white">
@@ -121,11 +121,7 @@ function Navbar(...classes) {
                 </li>
                 <hr />
                 <li>
-                  <Link to={"sign-up"}>
-                    {" "}
-                 
-                    Havenhub your home
-                  </Link>
+                  <Link to={"sign-up"}> Havenhub your home</Link>
                 </li>
 
                 <li>

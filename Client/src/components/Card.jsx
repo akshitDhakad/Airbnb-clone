@@ -8,11 +8,11 @@ function Card() {
   const [tab, setTab] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   return (
-    <>
+    <div>
       <div
         onMouseEnter={() => setTab(true)}
         onMouseLeave={() => setTab(false)}
-        className="relative h-72 w-full rounded-2xl overflow-hidden hover:cursor-pointer"
+        className="relative h-64 w-full rounded-2xl overflow-hidden hover:cursor-pointer"
       >
         <div>
           <button
@@ -39,7 +39,16 @@ function Card() {
           />
         </Link>
       </div>
-    </>
+      <div className="mt-2 px-1">
+        <h6>Mashobra,India</h6>
+        <p className="text-gray-600 text-sm">Mountain views</p>
+        <p className="text-gray-600 text-sm">5 nights . 21-26 Jul</p>
+        <p className="text-gray-800">
+          <span className="underline"> ₹ 1,35,045 total before taxes</span>
+          <span>.</span>
+        </p>
+      </div>
+    </div>
   );
 }
 

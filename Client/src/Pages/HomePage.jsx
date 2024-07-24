@@ -11,7 +11,7 @@ import axios from "axios";
 import { actionTypes } from "../store/reducer";
 import { AlertComp } from "../utils/Alert";
 const fetchProducts = async () => {
-  const { data } = await axios.get("https://dummyjson.com/productms");
+  const { data } = await axios.get("https://dummyjson.com/products");
   return data;
 };
 function HomePage() {
@@ -28,7 +28,7 @@ function HomePage() {
     },
   });
 
-  console.log(data);
+  
 
   return (
     <Layout>
@@ -49,6 +49,7 @@ function HomePage() {
           </div>
         </div>
       </section>
+      {/* footer banner */}
       <section>
         <Footerbanner />
       </section>

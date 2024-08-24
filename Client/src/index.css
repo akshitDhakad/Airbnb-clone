@@ -30,7 +30,9 @@ html {
 
 
 input{
+  background-color: whitesmoke;
   background-color: white;
+  border: 1px solid lightgray !important;
 }
 
 

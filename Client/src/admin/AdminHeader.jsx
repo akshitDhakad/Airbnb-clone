@@ -15,7 +15,7 @@ function AdminHeader() {
       <div>
         <form action="">
           <button></button>
-          <input type="text" />
+          <input type="text" className="rounded-md px-3 py-1 text-sm text-center font-thin placeholder:italic" placeholder="Search for Products here ..." />
         </form>
       </div>
 

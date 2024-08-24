@@ -7,9 +7,7 @@ import { Link } from "react-router-dom";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
 function AdminAddProduct() {
-
   const [isEditing, setIsEditing] = useState(false);
-
 
   return (
     <AdminLayout>
@@ -42,7 +40,7 @@ function AdminAddProduct() {
                           htmlFor="username"
                           className="block text-sm font-medium leading-6 text-gray-900"
                         >
-                          Username
+                          Host Name
                         </label>
                         <div className="mt-2">
                           <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
@@ -61,6 +59,7 @@ function AdminAddProduct() {
                         </div>
                       </div>
 
+                      {/* About Host  */}
                       <div className="col-span-full">
                         <label
                           htmlFor="about"
@@ -74,6 +73,8 @@ function AdminAddProduct() {
                             name="about"
                             placeholder="Write here..."
                             rows={3}
+                            required
+                            maxLength={110}
                             className="bg-white border block w-full rounded-md  py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-600 placeholder:textarea-sm  focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             // defaultValue={"Write Something about Host"}
                           />
@@ -83,6 +84,7 @@ function AdminAddProduct() {
                         </p>
                       </div>
 
+                      {/* Cover Photo  */}
                       <div className="col-span-full">
                         <label
                           htmlFor="photo"
@@ -94,7 +96,7 @@ function AdminAddProduct() {
                           <div className="h-20 w-20 rounded-full overflow-hidden border ring-1 ring-gray-400">
                             <img
                               className="h-full w-full object-cover object-center"
-                              src=""
+                              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s"
                               alt="Photo"
                             />
                           </div>
@@ -123,37 +125,110 @@ function AdminAddProduct() {
                         </div>
                       </div>
 
-                      <div className="col-span-full">
-                        <label
-                          htmlFor="cover-photo"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                          Cover photo
-                        </label>
-                        <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                          <div className="text-center">
-                            <PhotoIcon
-                              className="mx-auto h-12 w-12 text-gray-300"
-                              aria-hidden="true"
+                      <div className="col-span-full mt-10 grid grid-cols-6 gap-x-6 gap-y-8 ">
+                        {/* Date of birth */}
+                        <div className="sm:col-span-3">
+                          <label
+                            htmlFor="birth-date"
+                            className="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            Date of birth
+                          </label>
+                          <div className="mt-2">
+                            <input
+                              type="text"
+                              name="birth-date"
+                              id="birth-date"
+                              required
+                              placeholder="Enter birth date"
+                              autoComplete="given-name"
+                              className="block w-full rounded-md border-0 p-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:text-sm focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
-                            <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                          </div>
+                        </div>
+                        {/* School detail */}
+                        <div className="sm:col-span-3">
+                          <label
+                            htmlFor="school-detail"
+                            className="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            School-detail
+                          </label>
+                          <div className="mt-2">
+                            <input
+                              type="text"
+                              name="school-detail"
+                              id="school-detail"
+                              placeholder="Enter School Detail"
+                              autoComplete="school-detail"
+                              className="block w-full rounded-md border-0 p-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:text-sm focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              defaultValue={"Where I went to school:"}
+                            />
+                          </div>
+                        </div>
+                        {/* Host desciption */}
+                        <div className="sm:col-span-6">
+                          <label
+                            htmlFor="host-description"
+                            className="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            About Host Description
+                          </label>
+                          <div className="mt-2">
+                            <textarea
+                              id="host-description"
+                              name="host-description"
+                              placeholder="Write here..."
+                              rows={3}
+                              required
+                              maxLength={200}
+                              className="bg-white border block w-full rounded-md  py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-600 placeholder:textarea-sm  focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                          </div>
+                        </div>
+                        {/* Host Details */}
+                        <div className="sm:col-span-6">
+                          <p>Host Details</p>
+                          <div className="w-full mt-4 grid grid-cols-2 gap-x-6 gap-y-8">
+                            {/* Response rate */}
+                            <div className="">
                               <label
-                                htmlFor="file-upload"
-                                className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                                htmlFor="response-rate"
+                                className="block text-sm font-medium leading-6 text-gray-900"
                               >
-                                <span>Upload a file</span>
-                                <input
-                                  id="file-upload"
-                                  name="file-upload"
-                                  type="file"
-                                  className="sr-only"
-                                />
+                                Response rate
                               </label>
-                              <p className="pl-1">or drag and drop</p>
+                              <div className="mt-2">
+                                <input
+                                  type="text"
+                                  name="response-rate"
+                                  id="response-rate"
+                                  placeholder="Enter Host Response Rate"
+                                  autoComplete="response-rate"
+                                  className="block w-full rounded-md border-0 p-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                              </div>
                             </div>
-                            <p className="text-xs leading-5 text-gray-600">
-                              PNG, JPG, GIF up to 5MB
-                            </p>
+                            {/* Respond message */}
+                            <div className="">
+                              <label
+                                htmlFor="response-message"
+                                className="block text-sm font-medium leading-6 text-gray-900"
+                              >
+                                Respond message
+                              </label>
+                              <div className="mt-2">
+                                <input
+                                  type="text"
+                                  name="response-message"
+                                  id="response-message"
+                                  placeholder="Enter School Detail"
+                                  autoComplete="response-message"
+                                  className="block w-full rounded-md border-0 p-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                  defaultValue={"response within a hours"}
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>

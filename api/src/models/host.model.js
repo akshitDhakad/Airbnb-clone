@@ -19,13 +19,19 @@ const hostSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
+    lowercase: true,
+    trim: true,
+    match: [/\S+@\S+\.\S+/, "is invalid"],
+    minlength: [9, "Email can't be less than 9 characters"],
+    maxlength: [32, "Email can't be more than 32 characters"],
+    required: [true, "Must specify an email"],
+    unique: true,
   },
   phone: {
-    type: Number,
-    required: true,
+    type: String,
+    match: [/^\d{10}$/, "is invalid"],
+    required: [true, "Must specify a phone number"],
   },
-
   reviews: {
     type: String,
     required: true,

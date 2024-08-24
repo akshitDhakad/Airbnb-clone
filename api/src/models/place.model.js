@@ -1,6 +1,17 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+const imageSchema = new mongoose.Schema({
+  url: { type: String, required: true },
+  description: { type: String, required: false },
+});
+
+// Schema for sections that can contain multiple images (e.g., Bedroom, Kitchen)
+const sectionSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  images: [imageSchema],
+});
+
 const placeSchema = new Schema(
   {
     placeName: {
@@ -15,27 +26,22 @@ const placeSchema = new Schema(
       trim: true,
       required: [true, "Address  is required"],
     },
-    email: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      match: [/\S+@\S+\.\S+/, "is invalid"],
-      minlength: [9, "Email can't be less than 9 characters"],
-      maxlength: [32, "Email can't be more than 32 characters"],
-      required: [true, "Must specify an email"],
-      unique: true,
-    },
-    phone: {
-      type: String,
-      match: [/^\d{10}$/, "is invalid"],
-      required: [true, "Must specify a phone number"],
-    },
-    placeType: {
+
+    type: {
       type: String,
       lowercase: true,
       trim: true,
       required: [true, "Place Type is required"],
     },
+    images: [sectionSchema],
+    pricePerNight: { type: Number, required: true },
+    features: [
+      {
+        name: { type: String, required: true },
+        available: { type: Boolean, default: true }, // Availability status
+      },
+    ],
+
     placeDescription: {
       type: String,
       lowercase: true,
@@ -43,12 +49,16 @@ const placeSchema = new Schema(
       required: [true, "Description is required"],
     },
 
-
-
     host: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Host",
     },
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
   },
   { timestamps: true }
 );

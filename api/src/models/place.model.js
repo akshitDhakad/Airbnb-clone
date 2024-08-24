@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const productSchema = new Schema(
+const placeSchema = new Schema(
   {
-    ProductName: {
+    placeName: {
       type: String,
       lowercase: true,
       trim: true,
       required: [true, "Title Name is required"],
     },
-    productAddress: {
+    placeAddress: {
       type: String,
       lowercase: true,
       trim: true,
@@ -30,59 +30,29 @@ const productSchema = new Schema(
       match: [/^\d{10}$/, "is invalid"],
       required: [true, "Must specify a phone number"],
     },
-    prouductType: {
+    placeType: {
       type: String,
       lowercase: true,
       trim: true,
       required: [true, "Place Type is required"],
     },
-    productDescription: {
+    placeDescription: {
       type: String,
       lowercase: true,
       trim: true,
       required: [true, "Description is required"],
     },
-    productPrice: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      required: [true, "Price is required"],
+
+
+
+    host: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Host",
     },
-    productImage: {
-      tumnail: [String],
-      imgs: [String],
-      required: [true, "Image is required"],
-    },
-    productProperty: {
-      type: Map,
-      of: String, 
-      required: true,
-    },
-    productServices: {
-      type: Map,
-      of: String, 
-      required: true,
-    },
-    role: {
-      type: String,
-      enum: ["user", "admin"],
-      default: "user",
-    },
-    productPark :{
-        type: Boolean,
-        ref: "Park",
-        required: true,
-    },
-    
-    productHoster:{
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    }
   },
   { timestamps: true }
 );
 
-const Product = mongoose.model("Product", productSchema);
+const Place = mongoose.model("Place", placeSchema);
 
-module.exports = Product;
+module.exports = Place;

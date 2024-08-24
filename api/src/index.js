@@ -1,18 +1,31 @@
 const express = require("express");
-const connectDB = require("./db");
+const connectDB = require("./db/index.js");
 const path = require("path");
-const router = express.Router();
+// const router = express.Router();
 const cors = require("cors");
 const app = express();
-const bcrypt = require("bcrypt");
-const authRoutes = require("./routes/auth");
-const userRoutes = require("./routes/user");
+
+dotenv.config({
+  path: "./.env",
+});
+
+
+// const bcrypt = require("bcrypt");
+const authRoutes = require("./routes/auth.route.js");
+const userRoutes = require("./routes/user.route.js");
+
+
+
+
 // middlewares
 const morgan = require("morgan");
 // middlewares
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
+
+
+
 
 // Routes 
 // Define authentication routes

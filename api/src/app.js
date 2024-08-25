@@ -21,9 +21,12 @@ const bookingRoutes = require("./routes/booking.route.js");
 const authRoutes = require("./routes/auth.route.js");
 const userRoutes = require("./routes/user.route.js");
 const placeRoutes = require("./routes/place.route.js");
+const hostRoutes = require("./routes/host.route.js");
 
 //routes declaration
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
-app.use("/", bookingRoutes);
+app.use("/booking", bookingRoutes);
 app.use("/place", placeRoutes);
+app.use("/host", hostRoutes); 
+

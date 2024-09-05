@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+
+
 const hostSchema = new mongoose.Schema({
   profile: {
     type: String,
@@ -16,6 +18,7 @@ const hostSchema = new mongoose.Schema({
   identityVerified: {
     type: Boolean,
     required: true,
+    default: false,
   },
   email: {
     type: String,
@@ -111,5 +114,10 @@ const hostSchema = new mongoose.Schema({
     },
   ],
 });
+
+hostSchema.methods.verifyIdentity = function () {
+  this.identityVerified = true;
+  return this.save();
+};
 
 module.exports = mongoose.model("Host", hostSchema);

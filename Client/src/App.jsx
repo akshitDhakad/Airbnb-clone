@@ -5,6 +5,9 @@ import HomePage from "./Pages/HomePage";
 import CardDetail from "./Pages/CardDetail";
 import Signup from "./Pages/Signup";
 import Signin from "./Pages/Signin";
+import Error from "./pages/Error";
+// Host Routes 
+import HostSignup from "./admin/HostSignup";
 
 // Admin Routes 
 import  Home from "./admin/AdminHome";
@@ -23,6 +26,8 @@ function App() {
         <Route path="/admin/home" element={<Home />} />
         <Route path="/admin/addProduct" element={<AdminAddProduct />} />
         <Route path="/admin/editProduct" element={<AdminEditProduct />} />
+        <Route path="/host/signup" element={<HostSignup />} />
+        <Route path="*" element={<Error />} />
       </Routes>
     </div>
   );

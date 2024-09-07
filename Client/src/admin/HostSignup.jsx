@@ -5,11 +5,12 @@ import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
 import { useMutation } from "react-query";
 import axios from "axios";
+import { IoTrashOutline } from "react-icons/io5";
 
 function HostSignup() {
+  const [previewUrl, setPreviewUrl] = useState("/images/profile.png");
   const [formData, setFormData] = useState({
-    profile:
-      "https://t3.ftcdn.net/jpg/06/33/54/78/360_F_633547842_AugYzexTpMJ9z1YcpTKUBoqBF0CUCk10.jpg",
+    profile: null,
     firstname: "",
     lastname: "",
     dob: "",
@@ -123,6 +124,19 @@ function HostSignup() {
     mutation.mutate(payload);
   };
 
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setFormData((prevData) => ({
+        ...prevData,
+        profile: file,
+      }));
+      setPreviewUrl(imageUrl);
+    }
+  };
+
   return (
     <AdminLayout>
       <section className="h-full">
@@ -159,25 +173,45 @@ function HostSignup() {
                           Profile Picture
                         </label>
                         <div className="mt-2 flex items-center gap-x-3">
-                          <div className=" h-20 lg:h-40 lg:w-40 rounded-full">
+                          <div className="relative h-20 lg:h-40 lg:w-40 rounded-full overflow-hidden group">
                             <img
                               id="profile"
-                              className="h-full w-full object-cover object-center "
-                              name="profile"
-                              src={
-                                formData.profile ||
-                                "https://t3.ftcdn.net/jpg/06/33/54/78/360_F_633547842_AugYzexTpMJ9z1YcpTKUBoqBF0CUCk10.jpg"
-                              }
+                              className="h-full w-full object-cover object-center"
+                              src={previewUrl}
                               alt="Profile"
-                              aria-hidden="true"
                             />
+                            {formData.profile !== "/images/profile.png" && (
+                              <button
+                                type="button"
+                                className="absolute group-hover:z-10 top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-red-500 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                onClick={() => {
+                                  setFormData((prevData) => ({
+                                    ...prevData,
+                                    profile: null,
+                                  }));
+                                  setPreviewUrl("/images/profile.png");
+                                }}
+                              >
+                                <IoTrashOutline className=" text-2xl" />
+                              </button>
+                            )}
                           </div>
                           <button
                             type="button"
                             className="rounded-md bg-white py-1.5 px-2 text-sm font-semibold text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                            onClick={() =>
+                              document.getElementById("profileInput").click()
+                            }
                           >
                             Change
                           </button>
+                          <input
+                            type="file"
+                            id="profileInput"
+                            className="hidden"
+                            accept="image/*"
+                            onChange={handleProfilePicChange}
+                          />
                         </div>
                       </div>
 

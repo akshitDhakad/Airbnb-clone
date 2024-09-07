@@ -1,19 +1,8 @@
-const express = require("express");
-const cors = require("cors");
-const cookiesParser = require("cookie-parser");
-const path = require("path");
-const app = express();
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-  })
-);
 
-app.use(express.json({ limit: "16kb" }));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname, "public"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+// app.use(express.static(__dirname, "public"));
 app.use(cookiesParser());
 
 // routes import
@@ -23,9 +12,9 @@ const userRoutes = require("./routes/user.route.js");
 const placeRoutes = require("./routes/place.route.js");
 const hostRoutes = require("./routes/host.routes");
 
+app.get("/", (req, res) => {
+  res.send("Hello World");
+})
+
 //routes declaration
-app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
-app.use("/booking", bookingRoutes);
-app.use("/place", placeRoutes);
-app.use("/host", hostRoutes);
+

@@ -34,6 +34,7 @@ exports.getHostById = async (req, res) => {
 
 // CREATE HOST
 exports.createHost = async (req, res) => {
+  console.log(req.body);
   try {
     const host = new Host(req.body);
     await host.save();

@@ -6,12 +6,16 @@ const hostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  name: {
+  firstname: {
+    type: String,
+    required: true,
+  },
+  lastname: {
     type: String,
     required: true,
   },
   dob: {
-    type: Date,
+    type: String,
     required: true,
   },
   identityVerified: {
@@ -31,7 +35,7 @@ const hostSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    match: [/^\d{10}$/, "is invalid"],
+    // match: [/^\d{10}$/, "is invalid"],
     required: [true, "Must specify a phone number"],
   },
   birthYear: {

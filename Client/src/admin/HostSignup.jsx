@@ -8,7 +8,8 @@ import axios from "axios";
 
 function HostSignup() {
   const [formData, setFormData] = useState({
-    profile: "",
+    profile:
+      "https://t3.ftcdn.net/jpg/06/33/54/78/360_F_633547842_AugYzexTpMJ9z1YcpTKUBoqBF0CUCk10.jpg",
     firstname: "",
     lastname: "",
     dob: "",
@@ -34,7 +35,12 @@ function HostSignup() {
   });
 
   const mutation = useMutation(
-    (newHost) => axios.post("/api/hosts", newHost), // Replace with your actual API endpoint
+    (newHost) =>
+      axios.post("http://localhost:3000/host", newHost, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
     {
       onSuccess: () => {
         alert("Host created successfully!");

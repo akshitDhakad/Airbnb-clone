@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 
-
 const hostSchema = new mongoose.Schema({
   profile: {
     type: String,
@@ -34,14 +33,6 @@ const hostSchema = new mongoose.Schema({
     type: String,
     match: [/^\d{10}$/, "is invalid"],
     required: [true, "Must specify a phone number"],
-  },
-  reviews: {
-    type: String,
-    required: true,
-  },
-  rating: {
-    type: Number,
-    required: true,
   },
   birthYear: {
     type: Number,
@@ -108,6 +99,12 @@ const hostSchema = new mongoose.Schema({
     },
   ],
   reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
+  likes: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Review",

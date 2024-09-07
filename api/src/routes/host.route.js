@@ -1,20 +1,20 @@
 const express = require("express");
-const hostController = require("../controllers/hostController");
 const router = express.Router();
 
-// Create a new host
-router.post("/", hostController.createHost);
+const hostController = require("../controllers/host.controller");
 
-// Get all hosts
-router.get("/", hostController.getAllHosts);
+// Routes for Host operations
+router.get("/", hostController.getAllHosts); // GET all hosts
+router.get("/:id", hostController.getHostById); // GET host by ID
+router.post("/", hostController.createHost); // CREATE new host
+router.put("/:id", hostController.updateHost); // UPDATE host by ID
+router.delete("/:id", hostController.deleteHost); // DELETE host by ID
 
-// Get a host by ID
-router.get("/:id", hostController.getHostById);
+// Route to verify host identity
+router.patch("/:id/verify", hostController.verifyHostIdentity); // PATCH request to verify host
 
-// Update a host
-router.put("/:id", hostController.updateHost);
-
-// Delete a host
-router.delete("/:id", hostController.deleteHost);
+// Routes to add review and like to a host
+router.post("/:hostId/reviews", hostController.addReviewToHost); // POST request to add review
+router.post("/:hostId/likes", hostController.addLikeToHost); // POST request to add like
 
 module.exports = router;
